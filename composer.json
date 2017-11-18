@@ -1,0 +1,50 @@
+{
+    "name": "lzakrzewski/prooph-saga-playground",
+    "authors": [
+        {
+            "name": "lzakrzewski",
+            "email": "contact@lzakrzewski.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "tests\\": "tests/"
+        }
+    },
+    "require": {
+        "php": ">=7.1.0",
+        "ramsey/uuid": "~3.7",
+        "symfony/console": "~3.3"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "~2.8",
+        "phpunit/phpunit": "~6.4"
+    },
+    "scripts": {
+        "cs-fixer-ci": "bin/php-cs-fixer fix --config=php_cs.dist --dry-run",
+        "cs-fixer": "bin/php-cs-fixer fix --config=php_cs.dist",
+        "unit": "bin/phpunit --testsuite=unit",
+        "integration": "bin/phpunit --testsuite=integration",
+        "acceptance": "bin/phpunit --testsuite=acceptance",
+        "test": [
+            "@cs-fixer",
+            "@unit",
+            "@integration",
+            "@acceptance"
+        ],
+        "test-ci": [
+            "@cs-fixer-ci",
+            "@unit",
+            "@integration",
+            "@acceptance"
+        ]
+    },
+    "config": {
+        "bin-dir": "bin"
+    }
+}
