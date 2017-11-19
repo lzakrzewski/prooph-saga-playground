@@ -23,11 +23,6 @@ final class Container
 
     public function __construct()
     {
-        $command = new PlaygroundCommand();
-
-        $application = new Application();
-        $application->add($command);
-
         $commandBus = new CommandBus();
         $router     = new CommandRouter();
 
@@ -43,6 +38,11 @@ final class Container
             ->to($createOrderHandler);
 
         $router->attachToMessageBus($commandBus);
+
+        $command = new PlaygroundCommand($commandBus);
+
+        $application = new Application();
+        $application->add($command);
 
         $this->services = [
             CommandBus::class        => $commandBus,

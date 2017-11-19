@@ -19,7 +19,7 @@ class PlaygroundCommandTest extends UsesContainerTestCase
     {
         $command = $this->getService(PlaygroundCommand::class);
 
-        $this->executeConsoleCommand($command);
+        $this->executeConsoleCommand($command, ['1']);
 
         $this->assertExitCode(0);
     }
