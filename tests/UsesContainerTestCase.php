@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace tests;
 
-use Container\ContainerBuilder;
+use Application\Container\Container;
 use PHPUnit\Framework\TestCase;
 
 abstract class UsesContainerTestCase extends TestCase
 {
-    /** @var array */
+    /** @var Container */
     private $container;
 
     protected function setUp()
     {
-        $this->container = ContainerBuilder::build();
+        $this->container = new Container();
     }
 
     protected function tearDown()
@@ -22,8 +22,8 @@ abstract class UsesContainerTestCase extends TestCase
         $this->container = null;
     }
 
-    protected function container(): array
+    protected function getService(string $service)
     {
-        return $this->container;
+        return ($this->container)($service);
     }
 }

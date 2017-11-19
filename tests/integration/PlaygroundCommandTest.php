@@ -17,7 +17,7 @@ class PlaygroundCommandTest extends UsesContainerTestCase
     /** @test */
     public function it_returns_0_exit_code_after_success()
     {
-        $command = $this->container()[PlaygroundCommand::class];
+        $command = $this->getService(PlaygroundCommand::class);
 
         $this->executeConsoleCommand($command);
 

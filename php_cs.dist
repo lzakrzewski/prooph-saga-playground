@@ -12,6 +12,7 @@ return PhpCsFixer\Config::create()
         'binary_operator_spaces' => ['align_double_arrow' => true, 'align_equals' => true],
         'ordered_imports' => true,
         'array_syntax' => ['syntax' => 'short'],
+        'declare_strict_types' => true,
     ))
     ->setFinder($finder)
     ->setUsingCache(true)
