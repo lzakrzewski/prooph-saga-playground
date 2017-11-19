@@ -20,38 +20,16 @@ use Symfony\Component\Console\Application;
 final class Container
 {
     /** @var array */
-    private $services;
+    private $services = [];
 
     public function __construct()
     {
-        $commandBus = new CommandBus();
-        $router     = new CommandRouter();
-
-        $eventStore = new TransactionalActionEventEmitterEventStore(
-            new InMemoryEventStore(),
-            new ProophActionEventEmitter()
-        );
-
-        $orderRepository = new EventSourcedOrderRepository($eventStore);
-
-        $createOrderHandler = new CreateOrderHandler($orderRepository);
-        $router->route(CreateOrder::class)
-            ->to($createOrderHandler);
-
-        $router->attachToMessageBus($commandBus);
-
-        $command = new PlaygroundCommand($commandBus);
-
-        $application = new Application();
-        $application->add($command);
-
-        $this->services = [
-            CommandBus::class        => $commandBus,
-            EventStore::class        => $eventStore,
-            OrderRepository::class   => $orderRepository,
-            PlaygroundCommand::class => $command,
-            Application::class       => $application,
-        ];
+        $this->registerEventStore();
+        $this->registerDomainServices();
+        $this->registerCommandHandlers();
+        $this->registerCommandBus();
+        $this->registerConsoleCommand();
+        $this->registerApplication();
     }
 
     public function __invoke(string $service)
@@ -61,5 +39,45 @@ final class Container
         }
 
         return $this->services[$service];
+    }
+
+    private function registerEventStore()
+    {
+        $this->services[EventStore::class] = new TransactionalActionEventEmitterEventStore(
+            new InMemoryEventStore(),
+            new ProophActionEventEmitter()
+        );
+    }
+
+    private function registerDomainServices()
+    {
+        $this->services[OrderRepository::class] = new EventSourcedOrderRepository($this->services[EventStore::class]);
+    }
+
+    private function registerCommandHandlers()
+    {
+        $this->services[CommandRouter::class] = new CommandRouter();
+
+        $this->services[CreateOrderHandler::class]= new CreateOrderHandler($this->services[OrderRepository::class]);
+
+        $this->services[CommandRouter::class]->route(CreateOrder::class)
+            ->to($this->services[CreateOrderHandler::class]);
+    }
+
+    private function registerCommandBus()
+    {
+        $this->services[CommandBus::class] = new CommandBus();
+        $this->services[CommandRouter::class]->attachToMessageBus($this->services[CommandBus::class]);
+    }
+
+    private function registerConsoleCommand()
+    {
+        $this->services[PlaygroundCommand::class] = new PlaygroundCommand($this->services[CommandBus::class]);
+    }
+
+    private function registerApplication()
+    {
+        $this->services[Application::class] = new Application();
+        $this->services[Application::class]->add($this->services[PlaygroundCommand::class]);
     }
 }

@@ -6,6 +6,7 @@ namespace tests;
 
 use PHPUnit\Framework\TestCase;
 use Prooph\EventStore\EventStore;
+use Prooph\EventStore\StreamName;
 use Prooph\ServiceBus\CommandBus;
 
 class Scenario
@@ -35,18 +36,28 @@ class Scenario
 
     public function then(...$events)
     {
-        $recordedEvents = [];
+        $recordedEvents = $this->recordedEvents();
 
-        foreach ($this->eventStore->fetchStreamNames(null, null) as $streamName) {
-            foreach ($this->eventStore->load($streamName) as $event) {
-                $recordedEvents[] = $event;
-            }
-        }
+        $this->assertEvents($events, $recordedEvents);
+    }
 
-        foreach ($events as $key => $event) {
+    private function recordedEvents(): array
+    {
+        return array_reduce(
+            $this->eventStore->fetchStreamNames(null, null),
+            function (array $events, StreamName $streamName) {
+                return array_merge($events, iterator_to_array($this->eventStore->load($streamName)));
+            },
+            []
+        );
+    }
+
+    private function assertEvents(array $expectedEvents, array $recordedEvents)
+    {
+        foreach ($expectedEvents as $key => $event) {
             $recordedEvent = $recordedEvents[$key];
 
-            $this->testCase->assertInstanceOf(get_class($events[$key]), $recordedEvents[$key]);
+            $this->testCase->assertInstanceOf(get_class($expectedEvents[$key]), $recordedEvents[$key]);
             $this->testCase->assertEquals($event->payload(), $recordedEvent->payload());
         }
     }
