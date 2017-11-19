@@ -20,9 +20,9 @@ class EventSourcedOrderRepository extends AggregateRepository implements OrderRe
             $eventStore,
             AggregateType::fromAggregateRootClass(Order::class),
             new AggregateTranslator(),
-            null, //We don't use a snapshot store in the example
-            null, //Also a custom stream name is not required
-            true //But we enable the "one-stream-per-aggregate" mode
+            null,
+            null,
+            true
         );
     }
 
@@ -36,7 +36,7 @@ class EventSourcedOrderRepository extends AggregateRepository implements OrderRe
         $order = $this->getAggregateRoot($orderId->toString());
 
         if (null === $order) {
-            throw new \DomainException('Order with id "%s" does not exist.', $orderId);
+            throw new \DomainException(sprintf('Order with id "%s" does not exist.', $orderId));
         }
 
         return $order;

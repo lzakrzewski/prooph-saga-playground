@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Console;
+namespace Infrastructure\Console;
 
 use Application\Command\CreateOrder;
 use Prooph\ServiceBus\CommandBus;

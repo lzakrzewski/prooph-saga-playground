@@ -2,11 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Application\Container;
+namespace Infrastructure\Container;
 
 use Application\Command\CreateOrder;
 use Application\Command\CreateOrderHandler;
-use Console\PlaygroundCommand;
+use Domain\Order\OrderRepository;
+use Infrastructure\Console\PlaygroundCommand;
 use Infrastructure\Persistence\EventSourcedOrderRepository;
 use Prooph\Common\Event\ProophActionEventEmitter;
 use Prooph\EventStore\EventStore;
@@ -31,9 +32,9 @@ final class Container
             new ProophActionEventEmitter()
         );
 
-        $userRepository = new EventSourcedOrderRepository($eventStore);
+        $orderRepository = new EventSourcedOrderRepository($eventStore);
 
-        $createOrderHandler = new CreateOrderHandler($userRepository);
+        $createOrderHandler = new CreateOrderHandler($orderRepository);
         $router->route(CreateOrder::class)
             ->to($createOrderHandler);
 
@@ -47,6 +48,7 @@ final class Container
         $this->services = [
             CommandBus::class        => $commandBus,
             EventStore::class        => $eventStore,
+            OrderRepository::class   => $orderRepository,
             PlaygroundCommand::class => $command,
             Application::class       => $application,
         ];
