@@ -6,6 +6,7 @@ namespace Infrastructure\Container;
 
 use Application\Command\CreateOrder;
 use Application\Command\CreateOrderHandler;
+use Application\Middleware\CollectsMessages;
 use Domain\Order\OrderRepository;
 use Infrastructure\Console\PlaygroundCommand;
 use Infrastructure\Persistence\EventSourcedOrderRepository;
@@ -14,6 +15,8 @@ use Prooph\EventStore\EventStore;
 use Prooph\EventStore\InMemoryEventStore;
 use Prooph\EventStore\TransactionalActionEventEmitterEventStore;
 use Prooph\ServiceBus\CommandBus;
+use Prooph\ServiceBus\EventBus;
+use Prooph\ServiceBus\MessageBus;
 use Prooph\ServiceBus\Plugin\Router\CommandRouter;
 use Symfony\Component\Console\Application;
 
@@ -58,7 +61,15 @@ final class Container
     {
         $this->services[CommandRouter::class] = new CommandRouter();
 
-        $this->services[CreateOrderHandler::class]= new CreateOrderHandler($this->services[OrderRepository::class]);
+        /* @var EventBus $eventBus */
+        $this->services[EventBus::class]   = $eventBus   = new EventBus(new ProophActionEventEmitter());
+        $middleware                        = new CollectsMessages();
+
+        $eventBus->attach(MessageBus::EVENT_DISPATCH, $middleware);
+
+        $this->services[CollectsMessages::class] = $middleware;
+
+        $this->services[CreateOrderHandler::class]= new CreateOrderHandler($this->services[OrderRepository::class], $eventBus);
 
         $this->services[CommandRouter::class]->route(CreateOrder::class)
             ->to($this->services[CreateOrderHandler::class]);
@@ -67,6 +78,7 @@ final class Container
     private function registerCommandBus()
     {
         $this->services[CommandBus::class] = new CommandBus();
+        $this->services[CommandBus::class]->attach(MessageBus::EVENT_DISPATCH, $this->services[CollectsMessages::class]);
         $this->services[CommandRouter::class]->attachToMessageBus($this->services[CommandBus::class]);
     }
 

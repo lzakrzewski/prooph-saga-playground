@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace tests;
 
+use Application\Middleware\CollectsMessages;
 use PHPUnit\Framework\TestCase;
-use Prooph\EventStore\EventStore;
-use Prooph\EventStore\StreamName;
+use Prooph\Common\Messaging\DomainEvent;
 use Prooph\ServiceBus\CommandBus;
 
 class Scenario
@@ -14,17 +14,17 @@ class Scenario
     /** @var CommandBus */
     private $commandBus;
 
-    /** @var EventStore */
-    private $eventStore;
+    /** @var CollectsMessages */
+    private $messages;
 
     /** @var TestCase */
     private $testCase;
 
-    public function __construct(CommandBus $commandBus, EventStore $eventStore, TestCase $testCase)
+    public function __construct(CommandBus $commandBus, CollectsMessages $messages, TestCase $testCase)
     {
         $this->commandBus = $commandBus;
         $this->testCase   = $testCase;
-        $this->eventStore = $eventStore;
+        $this->messages   = $messages;
     }
 
     public function when($command)
@@ -36,24 +36,24 @@ class Scenario
 
     public function then(...$events)
     {
-        $recordedEvents = $this->recordedEvents();
-
-        $this->assertEvents($events, $recordedEvents);
-    }
-
-    private function recordedEvents(): array
-    {
-        return array_reduce(
-            $this->eventStore->fetchStreamNames(null, null),
-            function (array $events, StreamName $streamName) {
-                return array_merge($events, iterator_to_array($this->eventStore->load($streamName)));
-            },
-            []
+        $releasedEvents = array_filter(
+            $this->messages->all(),
+            function ($message) {
+                return $message instanceof DomainEvent;
+            }
         );
+
+        $this->assertEvents($events, $releasedEvents);
     }
 
     private function assertEvents(array $expectedEvents, array $recordedEvents)
     {
+        $this->testCase->assertCount(
+            $expectedCount = count($expectedEvents),
+            $recordedEvents,
+            sprintf('Expected %d events to be recorded, but %d recorded', $expectedCount, count($recordedEvents))
+        );
+
         foreach ($expectedEvents as $key => $event) {
             $recordedEvent = $recordedEvents[$key];
 
