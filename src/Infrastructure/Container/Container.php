@@ -6,6 +6,8 @@ namespace Infrastructure\Container;
 
 use Application\Command\CreateOrder;
 use Application\Command\CreateOrderHandler;
+use Application\Command\MakeReservation;
+use Application\Command\MakeReservationHandler;
 use Application\Middleware\CollectsMessages;
 use Infrastructure\Console\PlaygroundCommand;
 use Prooph\Common\Event\ProophActionEventEmitter;
@@ -61,10 +63,14 @@ final class Container
 
         $this->services[CollectsMessages::class] = $middleware;
 
-        $this->services[CreateOrderHandler::class]= new CreateOrderHandler($eventBus);
+        $this->services[CreateOrderHandler::class]    = new CreateOrderHandler($eventBus);
+        $this->services[MakeReservationHandler::class]= new MakeReservationHandler($eventBus);
 
         $this->services[CommandRouter::class]->route(CreateOrder::class)
             ->to($this->services[CreateOrderHandler::class]);
+
+        $this->services[CommandRouter::class]->route(MakeReservation::class)
+            ->to($this->services[MakeReservationHandler::class]);
     }
 
     private function registerCommandBus()

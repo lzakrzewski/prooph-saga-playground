@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Application\Command;
 
+use Domain\Reservation\SeatsReserved;
 use Prooph\ServiceBus\EventBus;
 
 class MakeReservationHandler
@@ -18,6 +19,6 @@ class MakeReservationHandler
 
     public function __invoke(MakeReservation $command)
     {
-        $this->eventBus->dispatch('sth');
+        $this->eventBus->dispatch(new SeatsReserved($command->reservationId, $command->numberOfSeats));
     }
 }

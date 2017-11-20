@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Infrastructure\Console;
 
 use Application\Command\CreateOrder;
+use Application\Command\MakeReservation;
 use Application\Middleware\CollectsMessages;
 use Prooph\Common\Messaging\DomainEvent;
 use Prooph\ServiceBus\CommandBus;
@@ -55,6 +56,14 @@ class PlaygroundCommand extends Command
 
             if (self::CHOICES[1] === $answer) {
                 $this->commandBus->dispatch(new CreateOrder(Uuid::uuid4(), 5));
+
+                $this->display($output);
+
+                return 0;
+            }
+
+            if (self::CHOICES[2] === $answer) {
+                $this->commandBus->dispatch(new MakeReservation(Uuid::uuid4(), 5));
 
                 $this->display($output);
 
