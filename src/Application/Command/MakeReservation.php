@@ -4,17 +4,19 @@ declare(strict_types=1);
 
 namespace Application\Command;
 
+use Ramsey\Uuid\UuidInterface;
+
 class MakeReservation
 {
     /** @var UuidInterface */
-    public $orderId;
+    public $reservationId;
 
     /** @var int */
     public $numberOfSeats;
 
-    public function __construct(UuidInterface $orderId, int $numberOfSeats)
+    public function __construct(UuidInterface $reservationId, int $numberOfSeats)
     {
-        $this->orderId       = $orderId;
-        $this->numberOfSeats = $numberOfSeats;
+        $this->reservationId       = $reservationId;
+        $this->numberOfSeats       = $numberOfSeats;
     }
 }

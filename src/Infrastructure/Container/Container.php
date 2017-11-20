@@ -7,9 +7,7 @@ namespace Infrastructure\Container;
 use Application\Command\CreateOrder;
 use Application\Command\CreateOrderHandler;
 use Application\Middleware\CollectsMessages;
-use Domain\Order\OrderRepository;
 use Infrastructure\Console\PlaygroundCommand;
-use Infrastructure\Persistence\EventSourcedOrderRepository;
 use Prooph\Common\Event\ProophActionEventEmitter;
 use Prooph\EventStore\EventStore;
 use Prooph\EventStore\InMemoryEventStore;
@@ -28,7 +26,6 @@ final class Container
     public function __construct()
     {
         $this->registerEventStore();
-        $this->registerDomainServices();
         $this->registerCommandHandlers();
         $this->registerCommandBus();
         $this->registerConsoleCommand();
@@ -52,11 +49,6 @@ final class Container
         );
     }
 
-    private function registerDomainServices()
-    {
-        $this->services[OrderRepository::class] = new EventSourcedOrderRepository($this->services[EventStore::class]);
-    }
-
     private function registerCommandHandlers()
     {
         $this->services[CommandRouter::class] = new CommandRouter();
@@ -69,7 +61,7 @@ final class Container
 
         $this->services[CollectsMessages::class] = $middleware;
 
-        $this->services[CreateOrderHandler::class]= new CreateOrderHandler($this->services[OrderRepository::class], $eventBus);
+        $this->services[CreateOrderHandler::class]= new CreateOrderHandler($eventBus);
 
         $this->services[CommandRouter::class]->route(CreateOrder::class)
             ->to($this->services[CreateOrderHandler::class]);
@@ -84,7 +76,7 @@ final class Container
 
     private function registerConsoleCommand()
     {
-        $this->services[PlaygroundCommand::class] = new PlaygroundCommand($this->services[CommandBus::class]);
+        $this->services[PlaygroundCommand::class] = new PlaygroundCommand($this->services[CommandBus::class], $this->services[CollectsMessages::class]);
     }
 
     private function registerApplication()
