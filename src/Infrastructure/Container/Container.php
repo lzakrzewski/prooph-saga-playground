@@ -11,9 +11,6 @@ use Application\Command\MakeReservationHandler;
 use Application\Middleware\CollectsMessages;
 use Infrastructure\Console\PlaygroundCommand;
 use Prooph\Common\Event\ProophActionEventEmitter;
-use Prooph\EventStore\EventStore;
-use Prooph\EventStore\InMemoryEventStore;
-use Prooph\EventStore\TransactionalActionEventEmitterEventStore;
 use Prooph\ServiceBus\CommandBus;
 use Prooph\ServiceBus\EventBus;
 use Prooph\ServiceBus\MessageBus;
@@ -27,7 +24,6 @@ final class Container
 
     public function __construct()
     {
-        $this->registerEventStore();
         $this->registerCommandHandlers();
         $this->registerCommandBus();
         $this->registerConsoleCommand();
@@ -41,14 +37,6 @@ final class Container
         }
 
         return $this->services[$service];
-    }
-
-    private function registerEventStore()
-    {
-        $this->services[EventStore::class] = new TransactionalActionEventEmitterEventStore(
-            new InMemoryEventStore(),
-            new ProophActionEventEmitter()
-        );
     }
 
     private function registerCommandHandlers()
