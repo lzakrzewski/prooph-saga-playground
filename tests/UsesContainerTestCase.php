@@ -22,6 +22,7 @@ abstract class UsesContainerTestCase extends TestCase
         $this->container = null;
     }
 
+    //Todo: rename it to get / use psr container
     protected function getService(string $service)
     {
         return ($this->container)($service);

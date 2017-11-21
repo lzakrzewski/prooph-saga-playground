@@ -22,6 +22,7 @@ final class Container
     /** @var array */
     private $services = [];
 
+    //Todo: get rid of this mess
     public function __construct()
     {
         $this->registerCommandHandlers();
@@ -51,8 +52,11 @@ final class Container
 
         $this->services[CollectsMessages::class] = $middleware;
 
+        $availableSeats = \Config::parameters()[\Config::AVAILABLE_SEATS];
+
+        $this->services[\Config::AVAILABLE_SEATS]     = $availableSeats;
         $this->services[CreateOrderHandler::class]    = new CreateOrderHandler($eventBus);
-        $this->services[MakeReservationHandler::class]= new MakeReservationHandler($eventBus);
+        $this->services[MakeReservationHandler::class]= new MakeReservationHandler($eventBus, $this->services[\Config::AVAILABLE_SEATS]);
 
         $this->services[CommandRouter::class]->route(CreateOrder::class)
             ->to($this->services[CreateOrderHandler::class]);

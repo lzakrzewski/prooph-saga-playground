@@ -9,7 +9,8 @@
     "autoload": {
         "psr-4": {
             "": "src/"
-        }
+        },
+        "classmap": ["config/Config.php"]
     },
     "autoload-dev": {
         "psr-4": {

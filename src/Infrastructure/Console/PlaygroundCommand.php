@@ -55,6 +55,7 @@ class PlaygroundCommand extends Command
             $answer = $helper->ask($input, $output, $question);
 
             if (self::CHOICES[1] === $answer) {
+                //todo: Ask number of seats
                 $this->commandBus->dispatch(new CreateOrder(Uuid::uuid4(), 5));
 
                 $this->display($output);
