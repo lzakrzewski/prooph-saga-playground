@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Infrastructure\Container;
 
+use Application\Command\AddSeatsToWaitList;
+use Application\Command\AddSeatsToWaitListHandler;
 use Application\Command\CreateOrder;
 use Application\Command\CreateOrderHandler;
 use Application\Command\MakePayment;
@@ -56,10 +58,11 @@ final class Container
 
         $availableSeats = \Config::parameters()[\Config::AVAILABLE_SEATS];
 
-        $this->services[\Config::AVAILABLE_SEATS]     = $availableSeats;
-        $this->services[CreateOrderHandler::class]    = new CreateOrderHandler($eventBus);
-        $this->services[MakeReservationHandler::class]= new MakeReservationHandler($eventBus, $this->services[\Config::AVAILABLE_SEATS]);
-        $this->services[MakePaymentHandler::class]    = new MakePaymentHandler($eventBus);
+        $this->services[\Config::AVAILABLE_SEATS]            = $availableSeats;
+        $this->services[CreateOrderHandler::class]           = new CreateOrderHandler($eventBus);
+        $this->services[MakeReservationHandler::class]       = new MakeReservationHandler($eventBus, $this->services[\Config::AVAILABLE_SEATS]);
+        $this->services[MakePaymentHandler::class]           = new MakePaymentHandler($eventBus);
+        $this->services[AddSeatsToWaitListHandler::class]    = new AddSeatsToWaitListHandler($eventBus);
 
         $this->services[CommandRouter::class]->route(CreateOrder::class)
             ->to($this->services[CreateOrderHandler::class]);
@@ -69,6 +72,9 @@ final class Container
 
         $this->services[CommandRouter::class]->route(MakePayment::class)
             ->to($this->services[MakePaymentHandler::class]);
+
+        $this->services[CommandRouter::class]->route(AddSeatsToWaitList::class)
+            ->to($this->services[AddSeatsToWaitListHandler::class]);
     }
 
     private function registerCommandBus()
