@@ -9,9 +9,9 @@ use Ramsey\Uuid\UuidInterface;
 
 final class SeatsReserved extends AggregateChanged
 {
-    public function __construct(UuidInterface $reservationId, int $numberOfSeats)
+    public function __construct(UuidInterface $paymentId, int $numberOfSeats)
     {
-        parent::__construct($reservationId->toString(), ['numberOfSeats' => $numberOfSeats]);
+        parent::__construct($paymentId->toString(), ['numberOfSeats' => $numberOfSeats]);
     }
 
     public function numberOfSeats(): int

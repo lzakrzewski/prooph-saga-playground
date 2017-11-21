@@ -6,6 +6,8 @@ namespace Infrastructure\Container;
 
 use Application\Command\CreateOrder;
 use Application\Command\CreateOrderHandler;
+use Application\Command\MakePayment;
+use Application\Command\MakePaymentHandler;
 use Application\Command\MakeReservation;
 use Application\Command\MakeReservationHandler;
 use Application\Middleware\CollectsMessages;
@@ -57,12 +59,16 @@ final class Container
         $this->services[\Config::AVAILABLE_SEATS]     = $availableSeats;
         $this->services[CreateOrderHandler::class]    = new CreateOrderHandler($eventBus);
         $this->services[MakeReservationHandler::class]= new MakeReservationHandler($eventBus, $this->services[\Config::AVAILABLE_SEATS]);
+        $this->services[MakePaymentHandler::class]    = new MakePaymentHandler($eventBus);
 
         $this->services[CommandRouter::class]->route(CreateOrder::class)
             ->to($this->services[CreateOrderHandler::class]);
 
         $this->services[CommandRouter::class]->route(MakeReservation::class)
             ->to($this->services[MakeReservationHandler::class]);
+
+        $this->services[CommandRouter::class]->route(MakePayment::class)
+            ->to($this->services[MakePaymentHandler::class]);
     }
 
     private function registerCommandBus()

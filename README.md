@@ -5,3 +5,4 @@ Small CLI application to indroduce Saga and ProcessManager-s.
 - [ ] Docker
 - [ ] Rearrange directories
 - [ ] Readme
+- [ ] Get rid of event prooph-sourcing

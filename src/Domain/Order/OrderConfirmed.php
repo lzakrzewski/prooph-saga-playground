@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Domain\Reservation;
+namespace Domain\Order;
 
 use Prooph\EventSourcing\AggregateChanged;
 use Ramsey\Uuid\UuidInterface;
 
-final class SeatsNotReserved extends AggregateChanged
+final class OrderConfirmed extends AggregateChanged
 {
     public function __construct(UuidInterface $paymentId, int $numberOfSeats)
     {

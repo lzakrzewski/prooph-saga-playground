@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Application\Command;
 
+use Domain\Payment\PaymentAccepted;
 use Prooph\ServiceBus\EventBus;
 
 class MakePaymentHandler
@@ -18,6 +19,6 @@ class MakePaymentHandler
 
     public function __invoke(MakePayment $command)
     {
-        $this->eventBus->dispatch('sth');
+        $this->eventBus->dispatch(new PaymentAccepted($command->paymentId, $command->amount));
     }
 }

@@ -1,15 +1,22 @@
 <?php
 
 declare(strict_types=1);
-/**
- * Created by PhpStorm.
- * User: lukasz
- * Date: 19/11/17
- * Time: 20:52.
- */
 
 namespace Application\Command;
 
+use Ramsey\Uuid\UuidInterface;
+
 class MakePayment
 {
+    /** @var UuidInterface */
+    public $paymentId;
+
+    /** @var int */
+    public $amount;
+
+    public function __construct(UuidInterface $paymentId, $amount)
+    {
+        $this->paymentId = $paymentId;
+        $this->amount    = $amount;
+    }
 }

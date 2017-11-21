@@ -86,6 +86,7 @@ class PlaygroundCommand extends Command
 
         $messages = array_reverse($this->collectsMessages->all());
 
+        //Todo: payload of events
         foreach ($messages as $message) {
             $shortName = (new \ReflectionClass($message))->getShortName();
 
