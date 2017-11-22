@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace tests\unit\Console\Middleware;
 
 use Console\Middleware\CollectsMessages;
+use Messaging\Command\CreateOrder;
+use Messaging\Event\OrderCreated;
 use PHPUnit\Framework\TestCase;
-use Playground\Command\CreateOrder;
-use Playground\Event\OrderCreated;
 use Prooph\Common\Event\ActionEvent;
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;

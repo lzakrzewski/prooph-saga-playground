@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Playground\Saga;
+namespace Messaging\Saga;
 
 class Saga
 {

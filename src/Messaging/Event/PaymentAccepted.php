@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Playground\Event;
+namespace Messaging\Event;
 
 use Prooph\EventSourcing\AggregateChanged;
 use Ramsey\Uuid\UuidInterface;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Playground\Command;
+namespace Messaging\Command;
 
 use Ramsey\Uuid\UuidInterface;
 

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace tests\acceptance\Playground\Command;
+namespace tests\acceptance\Messaging\Command;
 
-use Playground\Command\AddSeatsToWaitList;
-use Playground\Event\SeatsAddedToWaitList;
+use Messaging\Command\AddSeatsToWaitList;
+use Messaging\Event\SeatsAddedToWaitList;
 use Ramsey\Uuid\Uuid;
 use tests\UsesScenarioTestCase;
 

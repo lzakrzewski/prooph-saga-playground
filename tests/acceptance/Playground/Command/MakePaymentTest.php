@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace tests\acceptance\Playground\Command;
+namespace tests\acceptance\Messaging\Command;
 
-use Playground\Command\MakePayment;
-use Playground\Event\PaymentAccepted;
+use Messaging\Command\MakePayment;
+use Messaging\Event\PaymentAccepted;
 use Ramsey\Uuid\Uuid;
 use tests\UsesScenarioTestCase;
 

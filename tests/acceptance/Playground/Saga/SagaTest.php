@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace tests\acceptance\Playground\Saga;
+namespace tests\acceptance\Messaging\Saga;
 
 use tests\UsesScenarioTestCase;
 

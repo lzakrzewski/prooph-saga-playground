@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Playground\Event;
+namespace Messaging\Event;
 
 use Prooph\EventSourcing\AggregateChanged;
 use Ramsey\Uuid\UuidInterface;
 
-final class SeatsReserved extends AggregateChanged
+final class SeatsNotReserved extends AggregateChanged
 {
     public function __construct(UuidInterface $paymentId, int $numberOfSeats)
     {

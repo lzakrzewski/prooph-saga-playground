@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace tests\acceptance\Playground\Command;
+namespace tests\acceptance\Messaging\Command;
 
-use Playground\Command\CreateOrder;
-use Playground\Event\OrderCreated;
+use Messaging\Command\CreateOrder;
+use Messaging\Event\OrderCreated;
 use Ramsey\Uuid\Uuid;
 use tests\UsesScenarioTestCase;
 

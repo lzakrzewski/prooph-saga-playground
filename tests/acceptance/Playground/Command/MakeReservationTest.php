@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace tests\acceptance\Playground\Command;
+namespace tests\acceptance\Messaging\Command;
 
-use Playground\Command\MakeReservation;
-use Playground\Event\SeatsNotReserved;
-use Playground\Event\SeatsReserved;
+use Messaging\Command\MakeReservation;
+use Messaging\Event\SeatsNotReserved;
+use Messaging\Event\SeatsReserved;
 use Ramsey\Uuid\Uuid;
 use tests\UsesScenarioTestCase;
 

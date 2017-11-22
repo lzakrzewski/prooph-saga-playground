@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Console;
 
 use Console\Middleware\CollectsMessages;
-use Playground\Command\CreateOrder;
-use Playground\Command\MakeReservation;
+use Messaging\Command\CreateOrder;
+use Messaging\Command\MakeReservation;
 use Prooph\Common\Messaging\DomainEvent;
 use Prooph\ServiceBus\CommandBus;
 use Ramsey\Uuid\Uuid;

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Playground\Command;
+namespace Messaging\Command;
 
-use Playground\Event\PaymentAccepted;
+use Messaging\Event\PaymentAccepted;
 use Prooph\ServiceBus\EventBus;
 
 class MakePaymentHandler
