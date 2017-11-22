@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace tests;
 
 use Console\Middleware\CollectsMessages;
+use Messaging\DomainEvent;
 use PHPUnit\Framework\TestCase;
-use Prooph\Common\Messaging\DomainEvent;
 use Prooph\ServiceBus\CommandBus;
 
 class Scenario
@@ -15,16 +15,16 @@ class Scenario
     private $commandBus;
 
     /** @var CollectsMessages */
-    private $messages;
+    private $collectedMessages;
 
     /** @var TestCase */
     private $testCase;
 
     public function __construct(CommandBus $commandBus, CollectsMessages $messages, TestCase $testCase)
     {
-        $this->commandBus = $commandBus;
-        $this->testCase   = $testCase;
-        $this->messages   = $messages;
+        $this->commandBus          = $commandBus;
+        $this->testCase            = $testCase;
+        $this->collectedMessages   = $messages;
     }
 
     public function when($command)
@@ -36,14 +36,14 @@ class Scenario
 
     public function then(...$events)
     {
-        $releasedEvents = array_filter(
-            $this->messages->all(),
+        $collectedEvents = array_filter(
+            $this->collectedMessages->all(),
             function ($message) {
                 return $message instanceof DomainEvent;
             }
         );
 
-        $this->assertEvents($events, $releasedEvents);
+        $this->assertEvents($events, $collectedEvents);
     }
 
     private function assertEvents(array $expectedEvents, array $recordedEvents)

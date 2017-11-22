@@ -4,18 +4,23 @@ declare(strict_types=1);
 
 namespace Messaging\Event;
 
-use Prooph\EventSourcing\AggregateChanged;
+use Messaging\DomainEvent;
+use Messaging\MessageWithPayload;
 use Ramsey\Uuid\UuidInterface;
 
-class SeatsAddedToWaitList extends AggregateChanged
+class SeatsAddedToWaitList implements DomainEvent
 {
+    use MessageWithPayload;
+
+    /** @var UuidInterface */
+    private $waitListId;
+
+    /** @var int */
+    private $numberOfSeats;
+
     public function __construct(UuidInterface $waitListId, int $numberOfSeats)
     {
-        parent::__construct($waitListId->toString(), ['numberOfSeats' => $numberOfSeats]);
-    }
-
-    public function numberOfSeats(): int
-    {
-        return $this->payload['numberOfSeats'];
+        $this->waitListId    = $waitListId;
+        $this->numberOfSeats = $numberOfSeats;
     }
 }

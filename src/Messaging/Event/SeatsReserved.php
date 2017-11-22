@@ -4,18 +4,23 @@ declare(strict_types=1);
 
 namespace Messaging\Event;
 
-use Prooph\EventSourcing\AggregateChanged;
+use Messaging\DomainEvent;
+use Messaging\MessageWithPayload;
 use Ramsey\Uuid\UuidInterface;
 
-final class SeatsReserved extends AggregateChanged
+final class SeatsReserved implements DomainEvent
 {
-    public function __construct(UuidInterface $paymentId, int $numberOfSeats)
-    {
-        parent::__construct($paymentId->toString(), ['numberOfSeats' => $numberOfSeats]);
-    }
+    use MessageWithPayload;
 
-    public function numberOfSeats(): int
+    /** @var UuidInterface */
+    private $reservationId;
+
+    /** @var int */
+    private $numberOfSeats;
+
+    public function __construct(UuidInterface $reservationId, int $numberOfSeats)
     {
-        return $this->payload['numberOfSeats'];
+        $this->reservationId = $reservationId;
+        $this->numberOfSeats = $numberOfSeats;
     }
 }
