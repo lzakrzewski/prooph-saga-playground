@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace tests;
 
-use Infrastructure\Container\Container;
+use Console\Container;
 use PHPUnit\Framework\TestCase;
 
 abstract class UsesContainerTestCase extends TestCase
@@ -23,8 +23,8 @@ abstract class UsesContainerTestCase extends TestCase
     }
 
     //Todo: rename it to get / use psr container
-    protected function getService(string $service)
+    protected function getFromContainer(string $content)
     {
-        return ($this->container)($service);
+        return ($this->container)($content);
     }
 }

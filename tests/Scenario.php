@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace tests;
 
-use Application\Middleware\CollectsMessages;
+use Console\Middleware\CollectsMessages;
 use PHPUnit\Framework\TestCase;
 use Prooph\Common\Messaging\DomainEvent;
 use Prooph\ServiceBus\CommandBus;

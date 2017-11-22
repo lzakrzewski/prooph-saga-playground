@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace tests\integration\Console;
 
-use Infrastructure\Console\PlaygroundCommand;
+use Console\PlaygroundCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
 use tests\UsesContainerTestCase;
@@ -17,7 +17,7 @@ class PlaygroundCommandTest extends UsesContainerTestCase
     /** @test */
     public function it_returns_0_exit_code_after_success()
     {
-        $command = $this->getService(PlaygroundCommand::class);
+        $command = $this->getFromContainer(PlaygroundCommand::class);
 
         $this->executeConsoleCommand($command, ['1']);
 
