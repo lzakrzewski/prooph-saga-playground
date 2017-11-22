@@ -22,7 +22,6 @@
         "ramsey/uuid": "~3.7",
         "psr/container": "^1.0",
         "prooph/service-bus": "~6.1",
-        "prooph/event-sourcing": "~5.2",
         "symfony/console": "~3.3"
     },
     "require-dev": {
