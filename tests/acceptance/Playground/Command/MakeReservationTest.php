@@ -16,7 +16,7 @@ class MakeReservationTest extends UsesScenarioTestCase
     public function it_notifies_that_seats_have_been_reserved()
     {
         $this
-            ->scenario
+            ->scenario()
             ->when(new MakeReservation($reservationId = Uuid::uuid4(), 5))
             ->then(new SeatsReserved($reservationId, 5));
     }
@@ -24,10 +24,10 @@ class MakeReservationTest extends UsesScenarioTestCase
     /** @test */
     public function it_notifies_that_seats_have_not_been_reserved()
     {
-        $tooManySeats = $this->getFromContainer(\Config::AVAILABLE_SEATS) + 2;
+        $tooManySeats = $this->container()->get(\Config::AVAILABLE_SEATS) + 2;
 
         $this
-            ->scenario
+            ->scenario()
             ->when(new MakeReservation($reservationId = Uuid::uuid4(), $tooManySeats))
             ->then(new SeatsNotReserved($reservationId, $tooManySeats));
     }

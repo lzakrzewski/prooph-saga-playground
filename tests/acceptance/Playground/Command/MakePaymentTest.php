@@ -15,7 +15,7 @@ class MakePaymentTest extends UsesScenarioTestCase
     public function it_notifies_that_payment_has_been_accepted()
     {
         $this
-            ->scenario
+            ->scenario()
             ->when(new MakePayment($paymentId = Uuid::uuid4(), 5 * 100))
             ->then(new PaymentAccepted($paymentId, 500));
     }

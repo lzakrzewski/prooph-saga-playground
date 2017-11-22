@@ -4,7 +4,8 @@
 require __DIR__.'/../vendor/autoload.php';
 
 use Symfony\Component\Console\Application;
-use Console\Container;
+use Console\Container\Container;
 
-$application = (new Container())(Application::class);
-$application->run();
+Container::build()
+    ->get(Application::class)
+    ->run();

@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace tests;
 
-use Console\Container;
+use Console\Container\Container;
 use PHPUnit\Framework\TestCase;
+use Psr\Container\ContainerInterface;
 
 abstract class UsesContainerTestCase extends TestCase
 {
@@ -14,17 +15,16 @@ abstract class UsesContainerTestCase extends TestCase
 
     protected function setUp()
     {
-        $this->container = new Container();
+        $this->container = Container::build();
+    }
+
+    protected function container(): ContainerInterface
+    {
+        return $this->container;
     }
 
     protected function tearDown()
     {
         $this->container = null;
-    }
-
-    //Todo: rename it to get / use psr container
-    protected function getFromContainer(string $content)
-    {
-        return ($this->container)($content);
     }
 }

@@ -6,7 +6,7 @@ class Config
 {
     const AVAILABLE_SEATS = 'available_seats';
 
-    public static function parameters(): array
+    public static function get(): array
     {
         return [
             self::AVAILABLE_SEATS => getenv(self::AVAILABLE_SEATS) ?: 10,

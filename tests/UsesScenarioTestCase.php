@@ -10,17 +10,22 @@ use Prooph\ServiceBus\CommandBus;
 abstract class UsesScenarioTestCase extends UsesContainerTestCase
 {
     /** @var Scenario */
-    protected $scenario;
+    private $scenario;
 
     protected function setUp()
     {
         parent::setUp();
 
         $this->scenario = new Scenario(
-            $this->getFromContainer(CommandBus::class),
-            $this->getFromContainer(CollectsMessages::class),
+            $this->container()->get(CommandBus::class),
+            $this->container()->get(CollectsMessages::class),
             $this
         );
+    }
+
+    protected function scenario(): Scenario
+    {
+        return $this->scenario;
     }
 
     protected function tearDown()

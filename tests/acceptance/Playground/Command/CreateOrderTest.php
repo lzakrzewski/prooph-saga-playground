@@ -15,7 +15,7 @@ class CreateOrderTest extends UsesScenarioTestCase
     public function it_notifies_that_order_has_been_created()
     {
         $this
-            ->scenario
+            ->scenario()
             ->when(new CreateOrder($orderId = Uuid::uuid4(), 5))
             ->then(new OrderCreated($orderId, 5));
     }

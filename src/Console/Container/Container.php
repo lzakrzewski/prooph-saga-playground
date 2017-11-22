@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Console;
+namespace Console\Container;
 
 use Console\Middleware\CollectsMessages;
+use Console\PlaygroundCommand;
 use Messaging\Command\AddSeatsToWaitList;
 use Messaging\Command\CreateOrder;
 use Messaging\Command\Handler\AddSeatsToWaitListHandler;
@@ -17,41 +18,51 @@ use Prooph\ServiceBus\CommandBus;
 use Prooph\ServiceBus\EventBus;
 use Prooph\ServiceBus\MessageBus;
 use Prooph\ServiceBus\Plugin\Router\CommandRouter;
+use Psr\Container\ContainerInterface;
 use Symfony\Component\Console\Application;
 
-final class Container
+final class Container implements ContainerInterface
 {
     /** @var array */
-    private $contents = [];
+    private $contents;
 
-    //Todo: get rid of this mess
-    public function __construct()
+    public static function build(): self
     {
-        $this->config();
-        $this->messaging();
-        $this->console();
+        return new self();
     }
 
-    public function __invoke(string $service)
+    public function get($id)
     {
-        if (false === isset($this->contents[$service])) {
-            throw new \InvalidArgumentException(sprintf('Service "%s" does not exist.', $service));
+        if (false === $this->has($id)) {
+            throw NotFoundException::with($id);
         }
 
-        return $this->contents[$service];
+        return $this->contents[$id];
     }
 
-    private function config()
+    public function has($id)
     {
-        $this->contents = array_merge(
-            $this->contents,
-            [
-                \Config::AVAILABLE_SEATS => \Config::parameters()[\Config::AVAILABLE_SEATS],
-            ]
-        );
+        return isset($this->contents[$id]);
     }
 
-    private function messaging()
+    private function __construct()
+    {
+        $this->contents = $this
+            ->console(
+                $this
+                    ->messaging(
+                        $this
+                            ->config()
+                    )
+            );
+    }
+
+    private function config(): array
+    {
+        return \Config::get();
+    }
+
+    private function messaging(array $contents): array
     {
         $commandRouter = new CommandRouter();
         $middleware    = new CollectsMessages();
@@ -67,7 +78,7 @@ final class Container
             ->route(CreateOrder::class)
             ->to(new CreateOrderHandler($eventBus))
             ->route(MakeReservation::class)
-            ->to(new MakeReservationHandler($eventBus, $this->contents[\Config::AVAILABLE_SEATS]))
+            ->to(new MakeReservationHandler($eventBus, $contents[\Config::AVAILABLE_SEATS]))
             ->route(MakePayment::class)
             ->to(new MakePaymentHandler($eventBus))
             ->route(AddSeatsToWaitList::class)
@@ -76,8 +87,8 @@ final class Container
         $commandRouter
             ->attachToMessageBus($commandBus);
 
-        $this->contents = array_merge(
-            $this->contents,
+        return array_merge(
+            $contents,
             [
                 CollectsMessages::class => $middleware,
                 EventBus::class         => $eventBus,
@@ -86,15 +97,15 @@ final class Container
         );
     }
 
-    private function console()
+    private function console(array $contents): array
     {
         $application    = new Application();
-        $consoleCommand = new PlaygroundCommand($this->contents[CommandBus::class], $this->contents[CollectsMessages::class]);
+        $consoleCommand = new PlaygroundCommand($contents[CommandBus::class], $contents[CollectsMessages::class]);
 
         $application->add($consoleCommand);
 
-        $this->contents = array_merge(
-            $this->contents,
+        return array_merge(
+            $contents,
             [
                 PlaygroundCommand::class => $consoleCommand,
                 Application::class       => $application,
