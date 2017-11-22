@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Messaging\Command;
+namespace Messaging\Command\Handler;
 
+use Messaging\Command\AddSeatsToWaitList;
 use Messaging\Event\SeatsAddedToWaitList;
 use Prooph\ServiceBus\EventBus;
 

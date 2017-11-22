@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Messaging\Command;
+namespace Messaging\Command\Handler;
 
+use Messaging\Command\MakePayment;
 use Messaging\Event\PaymentAccepted;
 use Prooph\ServiceBus\EventBus;
 

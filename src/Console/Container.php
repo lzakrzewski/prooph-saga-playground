@@ -6,13 +6,13 @@ namespace Console;
 
 use Console\Middleware\CollectsMessages;
 use Messaging\Command\AddSeatsToWaitList;
-use Messaging\Command\AddSeatsToWaitListHandler;
 use Messaging\Command\CreateOrder;
-use Messaging\Command\CreateOrderHandler;
+use Messaging\Command\Handler\AddSeatsToWaitListHandler;
+use Messaging\Command\Handler\CreateOrderHandler;
+use Messaging\Command\Handler\MakePaymentHandler;
+use Messaging\Command\Handler\MakeReservationHandler;
 use Messaging\Command\MakePayment;
-use Messaging\Command\MakePaymentHandler;
 use Messaging\Command\MakeReservation;
-use Messaging\Command\MakeReservationHandler;
 use Prooph\ServiceBus\CommandBus;
 use Prooph\ServiceBus\EventBus;
 use Prooph\ServiceBus\MessageBus;

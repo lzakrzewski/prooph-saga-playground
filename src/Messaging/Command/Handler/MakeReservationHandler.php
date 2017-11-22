@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Messaging\Command;
+namespace Messaging\Command\Handler;
 
+use Messaging\Command\MakeReservation;
 use Messaging\Event\SeatsNotReserved;
 use Messaging\Event\SeatsReserved;
 use Prooph\ServiceBus\EventBus;
