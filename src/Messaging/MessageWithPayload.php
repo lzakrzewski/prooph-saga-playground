@@ -11,14 +11,20 @@ trait MessageWithPayload
         return array_reduce(
             (new \ReflectionClass($message = $this))->getProperties(),
             function (array $payload, \ReflectionProperty $property) use ($message) {
-                if ($property->isPrivate()) {
-                    return $payload;
+                if (true === $property->isPrivate()) {
+                    $property->setAccessible(true);
+                }
+
+                $value = (string) $property->getValue($message);
+
+                if (true === $property->isPrivate()) {
+                    $property->setAccessible(false);
                 }
 
                 return array_merge(
                     $payload,
                     [
-                        $property->getName() => (string) $property->getValue($message),
+                        $property->getName() => $value,
                     ]
                 );
             },

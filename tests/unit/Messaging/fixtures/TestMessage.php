@@ -17,7 +17,7 @@ class TestMessage implements DomainEvent, Command
     public $messageId;
 
     /** @var int */
-    public $value;
+    private $value;
 
     public function __construct(UuidInterface $messageId, int $value)
     {

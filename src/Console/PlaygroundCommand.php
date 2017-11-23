@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace Console;
 
-use Console\Middleware\CollectsMessages;
+use Console\Output\TableWithMessages;
 use Messaging\Command\CreateOrder;
 use Messaging\Command\MakeReservation;
-use Prooph\Common\Messaging\DomainEvent;
 use Prooph\ServiceBus\CommandBus;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
@@ -28,15 +26,15 @@ class PlaygroundCommand extends Command
     /** @var CommandBus */
     private $commandBus;
 
-    /** @var CollectsMessages */
-    private $collectsMessages;
+    /** @var TableWithMessages */
+    private $tableWithMessages;
 
-    public function __construct(CommandBus $commandBus, CollectsMessages $collectsMessages)
+    public function __construct(CommandBus $commandBus, TableWithMessages $tableWithMessages)
     {
         parent::__construct('prooph:saga:playground');
 
-        $this->commandBus       = $commandBus;
-        $this->collectsMessages = $collectsMessages;
+        $this->commandBus        = $commandBus;
+        $this->tableWithMessages = $tableWithMessages;
     }
 
     protected function configure()
@@ -47,57 +45,26 @@ class PlaygroundCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        while (true) {
-            $output->writeln('What would you like to do?');
-            $helper   = $this->getHelper('question');
-            $question = new ChoiceQuestion('', self::CHOICES);
+        $output->writeln('What would you like to do?');
 
-            $answer = $helper->ask($input, $output, $question);
-
-            if (self::CHOICES[1] === $answer) {
-                //todo: Ask number of seats
-                $this->commandBus->dispatch(new CreateOrder(Uuid::uuid4(), 5));
-
-                $this->display($output);
-
-                return 0;
-            }
-
-            if (self::CHOICES[2] === $answer) {
-                $this->commandBus->dispatch(new MakeReservation(Uuid::uuid4(), 5));
-
-                $this->display($output);
-
-                return 0;
-            }
-
-            if (false === $answer) {
-                return 0;
-            }
+        if (
+            false === $answer = $this->getHelper('question')
+                ->ask($input, $output, new ChoiceQuestion('', self::CHOICES))
+        ) {
+            return 0;
         }
+
+        if (self::CHOICES[1] === $answer) {
+            //todo: Ask number of seats
+            $this->commandBus->dispatch(new CreateOrder(Uuid::uuid4(), 5));
+        }
+
+        if (self::CHOICES[2] === $answer) {
+            $this->commandBus->dispatch(new MakeReservation(Uuid::uuid4(), 5));
+        }
+
+        $this->tableWithMessages->display($output);
 
         return 0;
-    }
-
-    private function display(OutputInterface $output)
-    {
-        $table = new Table($output);
-        $table->setHeaders(['Name of message', 'type']);
-
-        $messages = array_reverse($this->collectsMessages->all());
-
-        //Todo: payload of events
-        foreach ($messages as $message) {
-            $shortName = (new \ReflectionClass($message))->getShortName();
-
-            if ($message instanceof DomainEvent) {
-                $table->addRow(['<comment>'.$shortName.'</comment>', '<comment>Event</comment>']);
-                continue;
-            }
-
-            $table->addRow(['<info>'.$shortName.'</info>', '<info>Command</info>']);
-        }
-
-        $table->render();
     }
 }

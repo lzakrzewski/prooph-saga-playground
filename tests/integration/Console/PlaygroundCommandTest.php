@@ -22,8 +22,6 @@ class PlaygroundCommandTest extends UsesContainerTestCase
         $this->executeConsoleCommand($command, ['1']);
 
         $this->assertExitCode(0);
-        $this->assertOutputContains('CreateOrder');
-        $this->assertOutputContains('OrderCreated');
     }
 
     private function executeConsoleCommand(Command $cli, array $inputs = [])
@@ -36,10 +34,5 @@ class PlaygroundCommandTest extends UsesContainerTestCase
     private function assertExitCode(int $expectedStatus)
     {
         $this->assertEquals($expectedStatus, $this->tester->getStatusCode());
-    }
-
-    private function assertOutputContains(string $expected)
-    {
-        $this->assertContains($expected, $this->tester->getDisplay());
     }
 }
