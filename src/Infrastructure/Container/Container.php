@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Infrastructure\Container;
 
 use Infrastructure\Console\Output\TableWithMessages;
+use Infrastructure\Console\Output\WelcomeMessage;
 use Infrastructure\Console\PlaygroundCommand;
 use Infrastructure\Middleware\CollectsMessages;
 use Messaging\Command\AddSeatsToWaitList;
@@ -116,14 +117,16 @@ final class Container implements ContainerInterface
     private function console(array $contents): array
     {
         $application       = new Application();
+        $welcomeMessage    = new WelcomeMessage($contents[\Config::AVAILABLE_SEATS], $contents[\Config::PRICE_PER_SEAT]);
         $tableWithMessages = new TableWithMessages($contents[CollectsMessages::class]);
-        $consoleCommand    = new PlaygroundCommand($contents[CommandBus::class], $tableWithMessages);
+        $consoleCommand    = new PlaygroundCommand($contents[CommandBus::class], $tableWithMessages, $welcomeMessage);
 
         $application->add($consoleCommand);
 
         return array_merge(
             $contents,
             [
+                WelcomeMessage::class    => $welcomeMessage,
                 TableWithMessages::class => $tableWithMessages,
                 PlaygroundCommand::class => $consoleCommand,
                 Application::class       => $application,
