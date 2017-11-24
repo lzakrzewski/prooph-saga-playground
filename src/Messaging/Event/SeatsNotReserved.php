@@ -13,14 +13,19 @@ class SeatsNotReserved implements DomainEvent
     use MessageWithPayload;
 
     /** @var UuidInterface */
-    private $paymentId;
+    private $reservationId;
 
     /** @var int */
     private $numberOfSeats;
 
-    public function __construct(UuidInterface $paymentId, int $numberOfSeats)
+    public function __construct(UuidInterface $reservationId, int $numberOfSeats)
     {
-        $this->paymentId     = $paymentId;
-        $this->numberOfSeats = $numberOfSeats;
+        $this->reservationId     = $reservationId;
+        $this->numberOfSeats     = $numberOfSeats;
+    }
+
+    public function aggregateId(): UuidInterface
+    {
+        return $this->reservationId;
     }
 }

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Messaging;
 
-interface DomainEvent
+interface DomainEvent extends Message
 {
-    public function payload(): array;
 }

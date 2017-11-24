@@ -23,4 +23,9 @@ final class SeatsReserved implements DomainEvent
         $this->reservationId = $reservationId;
         $this->numberOfSeats = $numberOfSeats;
     }
+
+    public function aggregateId(): UuidInterface
+    {
+        return $this->reservationId;
+    }
 }

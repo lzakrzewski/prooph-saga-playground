@@ -23,4 +23,9 @@ class AddSeatsToWaitList implements Command
         $this->waitListId    = $waitListId;
         $this->numberOfSeats = $numberOfSeats;
     }
+
+    public function aggregateId(): UuidInterface
+    {
+        return $this->waitListId;
+    }
 }

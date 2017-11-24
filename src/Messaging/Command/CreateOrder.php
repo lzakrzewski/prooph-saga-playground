@@ -23,4 +23,9 @@ class CreateOrder implements Command
         $this->orderId       = $orderId;
         $this->numberOfSeats = $numberOfSeats;
     }
+
+    public function aggregateId(): UuidInterface
+    {
+        return $this->orderId;
+    }
 }

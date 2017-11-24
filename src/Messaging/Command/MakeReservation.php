@@ -23,4 +23,9 @@ class MakeReservation implements Command
         $this->reservationId       = $reservationId;
         $this->numberOfSeats       = $numberOfSeats;
     }
+
+    public function aggregateId(): UuidInterface
+    {
+        return $this->reservationId;
+    }
 }

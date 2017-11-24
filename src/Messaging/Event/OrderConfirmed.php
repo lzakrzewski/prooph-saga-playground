@@ -13,14 +13,19 @@ class OrderConfirmed implements DomainEvent
     use MessageWithPayload;
 
     /** @var UuidInterface */
-    private $paymentId;
+    private $orderId;
 
     /** @var int */
     private $numberOfSeats;
 
-    public function __construct(UuidInterface $paymentId, int $numberOfSeats)
+    public function __construct(UuidInterface $orderId, int $numberOfSeats)
     {
-        $this->paymentId     = $paymentId;
+        $this->orderId       = $orderId;
         $this->numberOfSeats = $numberOfSeats;
+    }
+
+    public function aggregateId(): UuidInterface
+    {
+        return $this->orderId;
     }
 }

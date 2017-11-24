@@ -23,4 +23,9 @@ class PaymentAccepted implements DomainEvent
         $this->paymentId = $paymentId;
         $this->amount    = $amount;
     }
+
+    public function aggregateId(): UuidInterface
+    {
+        return $this->paymentId;
+    }
 }

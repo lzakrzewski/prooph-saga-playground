@@ -23,4 +23,9 @@ class SeatsAddedToWaitList implements DomainEvent
         $this->waitListId    = $waitListId;
         $this->numberOfSeats = $numberOfSeats;
     }
+
+    public function aggregateId(): UuidInterface
+    {
+        return $this->waitListId;
+    }
 }

@@ -23,4 +23,9 @@ class MakePayment implements Command
         $this->paymentId = $paymentId;
         $this->amount    = $amount;
     }
+
+    public function aggregateId(): UuidInterface
+    {
+        return $this->paymentId;
+    }
 }

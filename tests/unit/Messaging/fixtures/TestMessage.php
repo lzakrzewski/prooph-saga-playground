@@ -24,4 +24,9 @@ class TestMessage implements DomainEvent, Command
         $this->messageId = $messageId;
         $this->value     = $value;
     }
+
+    public function aggregateId(): UuidInterface
+    {
+        return $this->messageId;
+    }
 }

@@ -15,10 +15,13 @@ use Messaging\Command\Handler\MakePaymentHandler;
 use Messaging\Command\Handler\MakeReservationHandler;
 use Messaging\Command\MakePayment;
 use Messaging\Command\MakeReservation;
+use Messaging\Event\OrderCreated;
+use Messaging\Saga\Saga;
 use Prooph\ServiceBus\CommandBus;
 use Prooph\ServiceBus\EventBus;
 use Prooph\ServiceBus\MessageBus;
 use Prooph\ServiceBus\Plugin\Router\CommandRouter;
+use Prooph\ServiceBus\Plugin\Router\EventRouter;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Console\Application;
 
@@ -66,9 +69,11 @@ final class Container implements ContainerInterface
     private function messaging(array $contents): array
     {
         $commandRouter = new CommandRouter();
+        $eventRouter   = new EventRouter();
         $middleware    = new CollectsMessages();
         $commandBus    = new CommandBus();
         $eventBus      = new EventBus();
+        $saga          = new Saga($commandBus);
 
         $eventBus
             ->attach(MessageBus::EVENT_DISPATCH, $middleware);
@@ -85,8 +90,15 @@ final class Container implements ContainerInterface
             ->route(AddSeatsToWaitList::class)
             ->to(new AddSeatsToWaitListHandler($eventBus));
 
+        $eventRouter
+            ->route(OrderCreated::class)
+            ->to([$saga, 'handleThatOrderCreated']);
+
         $commandRouter
             ->attachToMessageBus($commandBus);
+
+        $eventRouter
+            ->attachToMessageBus($eventBus);
 
         return array_merge(
             $contents,
