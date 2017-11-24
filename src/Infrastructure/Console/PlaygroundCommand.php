@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Console;
+namespace Infrastructure\Console;
 
-use Console\Output\TableWithMessages;
+use Infrastructure\Console\Output\TableWithMessages;
 use Messaging\Command\CreateOrder;
 use Messaging\Command\MakeReservation;
 use Prooph\ServiceBus\CommandBus;

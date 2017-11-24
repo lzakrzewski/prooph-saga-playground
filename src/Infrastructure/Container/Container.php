@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Console\Container;
+namespace Infrastructure\Container;
 
-use Console\Middleware\CollectsMessages;
-use Console\Output\TableWithMessages;
-use Console\PlaygroundCommand;
+use Infrastructure\Console\Output\TableWithMessages;
+use Infrastructure\Console\PlaygroundCommand;
+use Infrastructure\Middleware\CollectsMessages;
 use Messaging\Command\AddSeatsToWaitList;
 use Messaging\Command\CreateOrder;
 use Messaging\Command\Handler\AddSeatsToWaitListHandler;

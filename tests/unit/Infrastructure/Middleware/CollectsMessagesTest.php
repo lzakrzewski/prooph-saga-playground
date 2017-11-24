@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace tests\unit\Console\Middleware;
+namespace tests\unit\Infrastructure\Middleware;
 
-use Console\Middleware\CollectsMessages;
+use Infrastructure\Middleware\CollectsMessages;
 use Messaging\Command\CreateOrder;
 use Messaging\Event\OrderCreated;
 use PHPUnit\Framework\TestCase;

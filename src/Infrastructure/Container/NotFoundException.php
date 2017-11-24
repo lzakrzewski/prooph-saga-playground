@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Console\Container;
+namespace Infrastructure\Container;
 
 use Psr\Container\NotFoundExceptionInterface;
 

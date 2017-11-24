@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Console\Output;
+namespace Infrastructure\Console\Output;
 
-use Console\Middleware\CollectsMessages;
+use Infrastructure\Middleware\CollectsMessages;
 use Messaging\Command;
 use Messaging\DomainEvent;
 use Symfony\Component\Console\Helper\Table;

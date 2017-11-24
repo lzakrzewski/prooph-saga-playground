@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace tests\integration\Console\Output;
+namespace tests\integration\Infrastructure\Console\Output;
 
-use Console\Middleware\CollectsMessages;
-use Console\Output\TableWithMessages;
+use Infrastructure\Console\Output\TableWithMessages;
+use Infrastructure\Middleware\CollectsMessages;
 use Messaging\Command\CreateOrder;
 use Messaging\Event\OrderCreated;
 use Prooph\Common\Event\ActionEvent;

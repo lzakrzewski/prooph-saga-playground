@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace tests;
 
-use Console\Container\Container;
+use Infrastructure\Container\Container;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 

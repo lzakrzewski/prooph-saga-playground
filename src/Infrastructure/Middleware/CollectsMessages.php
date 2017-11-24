@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Console\Middleware;
+namespace Infrastructure\Middleware;
 
 use Messaging\Command;
 use Messaging\DomainEvent;

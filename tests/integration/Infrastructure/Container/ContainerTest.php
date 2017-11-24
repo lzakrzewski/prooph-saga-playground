@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace tests\integration\Console;
+namespace tests\integration\Infrastructure\Container;
 
-use Console\Container\Container;
-use Console\Container\NotFoundException;
-use Console\Middleware\CollectsMessages;
+use Infrastructure\Container\Container;
+use Infrastructure\Container\NotFoundException;
+use Infrastructure\Middleware\CollectsMessages;
 use PHPUnit\Framework\TestCase;
 
 class ContainerTest extends TestCase

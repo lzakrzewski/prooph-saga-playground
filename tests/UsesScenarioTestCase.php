@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace tests;
 
-use Console\Middleware\CollectsMessages;
+use Infrastructure\Middleware\CollectsMessages;
 use Prooph\ServiceBus\CommandBus;
 use Prooph\ServiceBus\EventBus;
 use Ramsey\Uuid\Uuid;
