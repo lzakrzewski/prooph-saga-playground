@@ -18,7 +18,7 @@ class MakeReservationTest extends UsesScenarioTestCase
         $this
             ->scenario()
             ->when(new MakeReservation($reservationId = Uuid::uuid4(), 5))
-            ->then(new SeatsReserved($reservationId, 5));
+            ->then(new SeatsReserved($reservationId, 5, 5 * 100));
     }
 
     /** @test */

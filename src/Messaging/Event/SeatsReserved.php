@@ -18,10 +18,14 @@ final class SeatsReserved implements DomainEvent
     /** @var int */
     private $numberOfSeats;
 
-    public function __construct(UuidInterface $reservationId, int $numberOfSeats)
+    /** @var int */
+    private $reservationAmount;
+
+    public function __construct(UuidInterface $reservationId, int $numberOfSeats, int $reservationAmount)
     {
-        $this->reservationId = $reservationId;
-        $this->numberOfSeats = $numberOfSeats;
+        $this->reservationId     = $reservationId;
+        $this->numberOfSeats     = $numberOfSeats;
+        $this->reservationAmount = $reservationAmount;
     }
 
     public function aggregateId(): UuidInterface

@@ -13,17 +13,13 @@ class MakePaymentHandler
     /** @var EventBus */
     private $eventBus;
 
-    /** @var int */
-    private $pricePerSeat;
-
-    public function __construct(EventBus $eventBus, int $pricePerSeat)
+    public function __construct(EventBus $eventBus)
     {
-        $this->eventBus     = $eventBus;
-        $this->pricePerSeat = $pricePerSeat;
+        $this->eventBus = $eventBus;
     }
 
     public function __invoke(MakePayment $command)
     {
-        $this->eventBus->dispatch(new PaymentAccepted($command->paymentId, $command->numberOfSeats * $this->pricePerSeat));
+        $this->eventBus->dispatch(new PaymentAccepted($command->paymentId, $command->amount));
     }
 }

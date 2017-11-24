@@ -28,7 +28,7 @@ class SagaTest extends UsesScenarioTestCase
     {
         $this->scenario()
             ->given(new OrderCreated(Uuid::uuid4(), 5))
-            ->when(new SeatsReserved($this->lastGeneratedAggregateIds()[1], 5))
+            ->when(new SeatsReserved($this->lastGeneratedAggregateIds()[1], 5, 5 * 100))
             ->then(new MakePayment($this->lastGeneratedAggregateIds()[2], 5));
     }
 }

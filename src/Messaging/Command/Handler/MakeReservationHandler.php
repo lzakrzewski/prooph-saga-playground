@@ -17,10 +17,14 @@ class MakeReservationHandler
     /** @var int */
     private $availableSeats;
 
-    public function __construct(EventBus $eventBus, int $availableSeats)
+    /** @var int */
+    private $pricePerSeat;
+
+    public function __construct(EventBus $eventBus, int $availableSeats, int $pricePerSeat)
     {
         $this->eventBus       = $eventBus;
         $this->availableSeats = $availableSeats;
+        $this->pricePerSeat   = $pricePerSeat;
     }
 
     public function __invoke(MakeReservation $command)
@@ -31,6 +35,8 @@ class MakeReservationHandler
             return;
         }
 
-        $this->eventBus->dispatch(new SeatsReserved($command->reservationId, $command->numberOfSeats));
+        $this->eventBus->dispatch(
+            new SeatsReserved($command->reservationId, $numberOfSeats = $command->numberOfSeats, $numberOfSeats * $this->pricePerSeat)
+        );
     }
 }

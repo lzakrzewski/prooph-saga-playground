@@ -85,9 +85,9 @@ final class Container implements ContainerInterface
             ->route(CreateOrder::class)
             ->to(new CreateOrderHandler($eventBus))
             ->route(MakeReservation::class)
-            ->to(new MakeReservationHandler($eventBus, $contents[\Config::AVAILABLE_SEATS]))
+            ->to(new MakeReservationHandler($eventBus, $contents[\Config::AVAILABLE_SEATS], $contents[\Config::PRICE_PER_SEAT]))
             ->route(MakePayment::class)
-            ->to(new MakePaymentHandler($eventBus, $contents[\Config::PRICE_PER_SEAT]))
+            ->to(new MakePaymentHandler($eventBus))
             ->route(AddSeatsToWaitList::class)
             ->to(new AddSeatsToWaitListHandler($eventBus));
 
