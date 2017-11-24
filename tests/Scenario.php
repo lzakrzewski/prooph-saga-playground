@@ -84,6 +84,7 @@ class Scenario
 
     private function findMessage(Message $expectedMessage, array $collectedMessages): Message
     {
+        //Todo: better error message
         foreach ($collectedMessages as $collectedMessage) {
             if (false === $collectedMessage instanceof $expectedMessage) {
                 continue;
