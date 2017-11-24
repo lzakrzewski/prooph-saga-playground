@@ -38,6 +38,15 @@ class Scenario
         $this->collectedMessages = $messages;
     }
 
+    public function given(...$events)
+    {
+        foreach ($events as $event) {
+            $this->eventBus->dispatch($event);
+        }
+
+        return $this;
+    }
+
     public function when(Message $message)
     {
         $this->dispatch($message);

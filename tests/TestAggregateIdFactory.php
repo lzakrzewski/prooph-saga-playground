@@ -20,10 +20,6 @@ class TestAggregateIdFactory extends UuidFactory
 
     public function all(): array
     {
-        $uuids = $this->generatedIds;
-
-        $this->generatedIds = [];
-
-        return $uuids;
+        return $this->generatedIds;
     }
 }

@@ -25,7 +25,7 @@ class TableWithMessages
         $table = new Table($output);
         $table->setHeaders(['Name of message', 'type', 'payload']);
 
-        foreach (array_reverse($this->collectedMessages->all()) as $message) {
+        foreach ($this->collectedMessages->all() as $message) {
             if (false === $message instanceof DomainEvent && false === $message instanceof Command) {
                 continue;
             }

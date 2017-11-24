@@ -16,6 +16,7 @@ use Messaging\Command\Handler\MakeReservationHandler;
 use Messaging\Command\MakePayment;
 use Messaging\Command\MakeReservation;
 use Messaging\Event\OrderCreated;
+use Messaging\Event\SeatsReserved;
 use Messaging\Saga\Saga;
 use Prooph\ServiceBus\CommandBus;
 use Prooph\ServiceBus\EventBus;
@@ -86,13 +87,15 @@ final class Container implements ContainerInterface
             ->route(MakeReservation::class)
             ->to(new MakeReservationHandler($eventBus, $contents[\Config::AVAILABLE_SEATS]))
             ->route(MakePayment::class)
-            ->to(new MakePaymentHandler($eventBus))
+            ->to(new MakePaymentHandler($eventBus, $contents[\Config::PRICE_PER_SEAT]))
             ->route(AddSeatsToWaitList::class)
             ->to(new AddSeatsToWaitListHandler($eventBus));
 
         $eventRouter
             ->route(OrderCreated::class)
-            ->to([$saga, 'handleThatOrderCreated']);
+            ->to([$saga, 'handleThatOrderCreated'])
+            ->route(SeatsReserved::class)
+            ->to([$saga, 'handleThatSeatsReserved']);
 
         $commandRouter
             ->attachToMessageBus($commandBus);

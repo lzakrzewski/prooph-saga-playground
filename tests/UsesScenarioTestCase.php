@@ -9,7 +9,6 @@ use Prooph\ServiceBus\CommandBus;
 use Prooph\ServiceBus\EventBus;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidFactory;
-use Ramsey\Uuid\UuidInterface;
 
 abstract class UsesScenarioTestCase extends UsesContainerTestCase
 {
@@ -49,7 +48,7 @@ abstract class UsesScenarioTestCase extends UsesContainerTestCase
         parent::tearDown();
     }
 
-    protected function lastGeneratedAggregateId(): UuidInterface
+    protected function lastGeneratedAggregateIds(): array
     {
         $allIds = $this->aggregateIdFactory->all();
 
@@ -57,6 +56,6 @@ abstract class UsesScenarioTestCase extends UsesContainerTestCase
             $this->fail('No aggregateIds generated.');
         }
 
-        return end($allIds);
+        return $allIds;
     }
 }

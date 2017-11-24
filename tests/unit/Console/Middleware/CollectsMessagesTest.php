@@ -27,10 +27,19 @@ class CollectsMessagesTest extends TestCase
         $this->collectMessages($messages = [
             new CreateOrder($orderId = Uuid::uuid4(), 5),
             new OrderCreated($orderId, 5),
-            'Some message',
         ]);
 
         $this->assertEquals($messages, $this->collectsMessages->all());
+    }
+
+    /** @test */
+    public function it_does_not_record_unknown_messages()
+    {
+        $this->collectMessages([
+            'unknown',
+        ]);
+
+        $this->assertEmpty($this->collectsMessages->all());
     }
 
     /** @test */
