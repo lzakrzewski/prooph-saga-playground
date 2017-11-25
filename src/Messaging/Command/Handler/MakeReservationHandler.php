@@ -36,7 +36,11 @@ class MakeReservationHandler
         }
 
         $this->eventBus->dispatch(
-            new SeatsReserved($command->reservationId, $numberOfSeats = $command->numberOfSeats, $numberOfSeats * $this->pricePerSeat)
+            new SeatsReserved(
+                $command->reservationId,
+                $numberOfSeats = $command->numberOfSeats,
+                $numberOfSeats * $this->pricePerSeat
+            )
         );
     }
 }

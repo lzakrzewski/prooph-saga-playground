@@ -48,7 +48,7 @@ abstract class UsesScenarioTestCase extends UsesContainerTestCase
         parent::tearDown();
     }
 
-    protected function lastGeneratedAggregateIds(): array
+    protected function aggregateIds(): array
     {
         $allIds = $this->aggregateIdFactory->all();
 

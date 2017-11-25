@@ -8,6 +8,7 @@ use Infrastructure\Console\Output\TableWithMessages;
 use Infrastructure\Console\Output\WelcomeMessage;
 use Infrastructure\Console\PlaygroundCommand;
 use Infrastructure\Middleware\CollectsMessages;
+use Infrastructure\Persistence\InMemoryStateRepository;
 use Messaging\Command\AddSeatsToWaitList;
 use Messaging\Command\CreateOrder;
 use Messaging\Command\Handler\AddSeatsToWaitListHandler;
@@ -20,6 +21,7 @@ use Messaging\Event\OrderCreated;
 use Messaging\Event\PaymentAccepted;
 use Messaging\Event\SeatsReserved;
 use Messaging\Saga\Saga;
+use Messaging\Saga\StateRepository;
 use Prooph\ServiceBus\CommandBus;
 use Prooph\ServiceBus\EventBus;
 use Prooph\ServiceBus\MessageBus;
@@ -71,12 +73,13 @@ final class Container implements ContainerInterface
 
     private function messaging(array $contents): array
     {
-        $commandRouter = new CommandRouter();
-        $eventRouter   = new EventRouter();
-        $middleware    = new CollectsMessages();
-        $commandBus    = new CommandBus();
-        $eventBus      = new EventBus();
-        $saga          = new Saga($commandBus, $eventBus);
+        $commandRouter   = new CommandRouter();
+        $eventRouter     = new EventRouter();
+        $middleware      = new CollectsMessages();
+        $commandBus      = new CommandBus();
+        $eventBus        = new EventBus();
+        $stateRepository = new InMemoryStateRepository();
+        $saga            = new Saga($commandBus, $eventBus, $stateRepository);
 
         $eventBus
             ->attach(MessageBus::EVENT_DISPATCH, $middleware);
@@ -111,6 +114,7 @@ final class Container implements ContainerInterface
             $contents,
             [
                 CollectsMessages::class => $middleware,
+                StateRepository::class  => $stateRepository,
                 EventBus::class         => $eventBus,
                 CommandBus::class       => $commandBus,
             ]

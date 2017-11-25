@@ -3,6 +3,7 @@ Small CLI application to indroduce Saga and ProcessManager-s.
 
 ## Todo:
 - [ ] Docker
-- [ ] Rearrange directories
+- [ ] Void return statements
+- [x] Rearrange directories
 - [ ] Readme
-- [ ] Get rid of event prooph-sourcing
+- [x] Get rid of event prooph-sourcing

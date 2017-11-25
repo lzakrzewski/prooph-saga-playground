@@ -68,7 +68,7 @@ class PlaygroundCommand extends Command
 
         if (self::CHOICES[1] === $answer) {
             $numberOfSeats = $this->getHelper('question')
-                ->ask($input, $output, new Question('How many seats?', 5));
+                ->ask($input, $output, new Question('How many seats? ', 5));
 
             if (false === $numberOfSeats) {
                 return 0;
@@ -79,7 +79,7 @@ class PlaygroundCommand extends Command
 
         if (self::CHOICES[2] === $answer) {
             $numberOfSeats = $this->getHelper('question')
-                ->ask($input, $output, new Question('How many seats?', 5));
+                ->ask($input, $output, new Question('How many seats? ', 5));
 
             if (false === $numberOfSeats) {
                 return 0;
@@ -90,7 +90,7 @@ class PlaygroundCommand extends Command
 
         if (self::CHOICES[3] === $answer) {
             $amount = $this->getHelper('question')
-                ->ask($input, $output, new Question('How  much?', 500));
+                ->ask($input, $output, new Question('How  much? ', 500));
 
             if (false === $amount) {
                 return 0;
@@ -101,7 +101,7 @@ class PlaygroundCommand extends Command
 
         if (self::CHOICES[4] === $answer) {
             $numberOfSeats = $this->getHelper('question')
-                ->ask($input, $output, new Question('How many seats?', 5));
+                ->ask($input, $output, new Question('How many seats? ', 5));
 
             if (false === $numberOfSeats) {
                 return 0;

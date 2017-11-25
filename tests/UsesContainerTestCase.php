@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace tests;
 
 use Infrastructure\Container\Container;
+use Messaging\Saga\StateRepository;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 
@@ -16,6 +17,9 @@ abstract class UsesContainerTestCase extends TestCase
     protected function setUp()
     {
         $this->container = Container::build();
+        $this->container
+            ->get(StateRepository::class)
+            ->reset();
     }
 
     protected function container(): ContainerInterface

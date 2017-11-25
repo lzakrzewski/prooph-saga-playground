@@ -4,16 +4,19 @@ declare(strict_types=1);
 
 namespace Messaging\Saga;
 
+use Messaging\Command\AddSeatsToWaitList;
 use Messaging\Command\MakePayment;
 use Messaging\Command\MakeReservation;
 use Messaging\Event\OrderConfirmed;
 use Messaging\Event\OrderCreated;
 use Messaging\Event\PaymentAccepted;
+use Messaging\Event\SeatsNotReserved;
 use Messaging\Event\SeatsReserved;
 use Prooph\ServiceBus\CommandBus;
 use Prooph\ServiceBus\EventBus;
 use Ramsey\Uuid\Uuid;
 
+//Todo: think about abstract saga
 class Saga
 {
     /** @var CommandBus */
@@ -22,39 +25,67 @@ class Saga
     /** @var EventBus */
     private $eventBus;
 
-    public function __construct(CommandBus $commandBus, EventBus $eventBus)
-    {
-        $this->commandBus = $commandBus;
-        $this->eventBus   = $eventBus;
+    /** @var StateRepository */
+    private $stateRepository;
 
-        //Todo: temporary hack
-        $this->state = [];
+    public function __construct(CommandBus $commandBus, EventBus $eventBus, StateRepository $stateRepository)
+    {
+        $this->commandBus      = $commandBus;
+        $this->eventBus        = $eventBus;
+        $this->stateRepository = $stateRepository;
     }
 
     public function handleThatOrderCreated(OrderCreated $orderCreated)
     {
-        $this->state['orderId'] = $orderCreated->aggregateId();
+        $orderId       = $orderCreated->aggregateId();
+        $reservationId = Uuid::uuid4();
+
+        $this->stateRepository->save(
+            State::create($orderId, $orderCreated->payload())
+                ->apply(['reservationId' => $reservationId])
+        );
 
         $this->commandBus->dispatch(
-            new MakeReservation(Uuid::uuid4(), (int) $orderCreated->payload()['numberOfSeats'])
+            new MakeReservation($reservationId, (int) $orderCreated->payload()['numberOfSeats'])
         );
     }
 
     public function handleThatSeatsReserved(SeatsReserved $seatsReserved)
     {
+        $state = $this->stateRepository->lastState();
+
+        if (null === $state) {
+            return;
+        }
+
         $this->commandBus->dispatch(
-            new MakePayment(Uuid::uuid4(), (int) $seatsReserved->payload()['numberOfSeats'])
+            new MakePayment(Uuid::uuid4(), (int) $seatsReserved->payload()['reservationAmount'])
+        );
+    }
+
+    public function handleThatSeatsNotReserved(SeatsNotReserved $seatsNotReserved)
+    {
+        $state = $this->stateRepository->lastState();
+
+        if (null === $state) {
+            return;
+        }
+
+        $this->commandBus->dispatch(
+            new AddSeatsToWaitList(Uuid::uuid4(), (int) $seatsNotReserved->payload()['numberOfSeats'])
         );
     }
 
     public function handleThatPaymentAccepted(PaymentAccepted $paymentAccepted)
     {
-        if (false === isset($this->state['orderId'])) {
+        $state = $this->stateRepository->lastState();
+
+        if (null === $state) {
             return;
         }
 
         $this->eventBus->dispatch(
-            new OrderConfirmed($this->state['orderId'], 5)
+            new OrderConfirmed(Uuid::fromString($state->payload()['orderId']), 5)
         );
     }
 }
