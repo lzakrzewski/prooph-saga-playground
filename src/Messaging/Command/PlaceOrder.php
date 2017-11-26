@@ -8,7 +8,6 @@ use Messaging\Command;
 use Messaging\MessageWithPayload;
 use Ramsey\Uuid\UuidInterface;
 
-//Todo: Place order?
 class PlaceOrder implements Command
 {
     use MessageWithPayload;

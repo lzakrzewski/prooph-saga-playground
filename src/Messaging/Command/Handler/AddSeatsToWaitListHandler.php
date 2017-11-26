@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Messaging\Command\Handler;
 
 use Messaging\Command\AddSeatsToWaitList;
-use Messaging\Event\SeatsAddedToWaitList;
 use Prooph\ServiceBus\EventBus;
 
 class AddSeatsToWaitListHandler
@@ -20,6 +19,5 @@ class AddSeatsToWaitListHandler
 
     public function __invoke(AddSeatsToWaitList $command): void
     {
-        $this->eventBus->dispatch(new SeatsAddedToWaitList($command->waitListId, $command->numberOfSeats));
     }
 }
