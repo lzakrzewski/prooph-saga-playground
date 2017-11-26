@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 class Config
 {
-    const AVAILABLE_SEATS = 'available_seats';
-    const PRICE_PER_SEAT  = 'price_per_seat';
+    const AVAILABLE_SEATS = 'PLAYGROUND_AVAILABLE_SEATS';
+    const PRICE_PER_SEAT  = 'PLAYGROUND_PRICE_PER_SEAT';
 
     public static function get(): array
     {
         return [
-            self::AVAILABLE_SEATS => getenv(self::AVAILABLE_SEATS) ?: 10,
-            self::PRICE_PER_SEAT  => getenv(self::PRICE_PER_SEAT) ?: 100,
+            self::AVAILABLE_SEATS => (int) getenv(self::AVAILABLE_SEATS) ?: 10,
+            self::PRICE_PER_SEAT  => (int) getenv(self::PRICE_PER_SEAT) ?: 100,
         ];
     }
 }
