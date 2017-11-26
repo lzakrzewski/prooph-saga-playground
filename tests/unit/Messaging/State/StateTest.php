@@ -49,6 +49,30 @@ class StateTest extends TestCase
     }
 
     /** @test */
+    public function it_knows_when_it_has_value_in_payload()
+    {
+        $state = State::create(Uuid::uuid4(), ['key' => 'value']);
+
+        $this->assertTrue($state->has('key'));
+    }
+
+    /** @test */
+    public function it_knows_when_it_does_not_have_value_in_payload()
+    {
+        $state = State::create(Uuid::uuid4(), ['key' => 'value']);
+
+        $this->assertFalse($state->has('another_key'));
+    }
+
+    /** @test */
+    public function it_knows_when_it_has_empty_value_in_payload()
+    {
+        $state = State::create(Uuid::uuid4(), ['key' => '']);
+
+        $this->assertFalse($state->has('key'));
+    }
+
+    /** @test */
     public function its_immutable()
     {
         $state1 = State::create(Uuid::uuid4(), ['key' => 'value']);
