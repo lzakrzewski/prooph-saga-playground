@@ -19,7 +19,7 @@ abstract class UsesScenarioTestCase extends UsesContainerTestCase
     /** @var TestAggregateIdFactory */
     private $aggregateIdFactory;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -40,7 +40,7 @@ abstract class UsesScenarioTestCase extends UsesContainerTestCase
         return $this->scenario;
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         Uuid::setFactory(new UuidFactory());
 

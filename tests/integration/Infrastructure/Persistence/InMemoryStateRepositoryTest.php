@@ -16,7 +16,7 @@ class InMemoryStateRepositoryTest extends UsesContainerTestCase
     private $stateRepository;
 
     /** @test */
-    public function it_can_find_state_by_saga_id()
+    public function it_can_find_state_by_saga_id(): void
     {
         $this->stateRepository->save(
             State::create($sagaId = Uuid::uuid4(), $payload = ['someId' => Uuid::uuid4()])
@@ -30,7 +30,7 @@ class InMemoryStateRepositoryTest extends UsesContainerTestCase
     }
 
     /** @test */
-    public function it_can_update_state()
+    public function it_can_update_state(): void
     {
         $this->given(State::create($sagaId = Uuid::uuid4(), ['someId' => Uuid::uuid4()]));
 
@@ -46,28 +46,28 @@ class InMemoryStateRepositoryTest extends UsesContainerTestCase
     }
 
     /** @test */
-    public function it_returns_null_when_state_for_given_criteria_does_not_exist()
+    public function it_returns_null_when_state_for_given_criteria_does_not_exist(): void
     {
         $this->given(State::create(Uuid::uuid4(), ['someId' => Uuid::uuid4()]));
 
         $this->assertNull($this->stateRepository->find(Uuid::uuid4()));
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->stateRepository = $this->container()->get(StateRepository::class);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->stateRepository = null;
 
         parent::tearDown();
     }
 
-    private function given(State $state)
+    private function given(State $state): void
     {
         $this->stateRepository->save($state);
     }

@@ -12,7 +12,7 @@ use tests\UsesScenarioTestCase;
 class MakePaymentTest extends UsesScenarioTestCase
 {
     /** @test */
-    public function it_notifies_that_payment_has_been_accepted()
+    public function it_notifies_that_payment_has_been_accepted(): void
     {
         $this
             ->scenario()

@@ -19,7 +19,7 @@ use tests\UsesScenarioTestCase;
 class OrderSagaTest extends UsesScenarioTestCase
 {
     /** @test */
-    public function it_makes_a_seat_reservation_and_makes_a_payment_when_order_has_been_created()
+    public function it_makes_a_seat_reservation_and_makes_a_payment_when_order_has_been_created(): void
     {
         $this->scenario()
             ->when(new OrderCreated($orderId = Uuid::uuid4(), 5))
@@ -30,7 +30,7 @@ class OrderSagaTest extends UsesScenarioTestCase
     }
 
     /** @test */
-    public function it_confirms_an_order_when_order_with_reservation_and_payments_are_successful()
+    public function it_confirms_an_order_when_order_with_reservation_and_payments_are_successful(): void
     {
         $this->scenario()
             ->given(
@@ -42,7 +42,7 @@ class OrderSagaTest extends UsesScenarioTestCase
     }
 
     /** @test */
-    public function it_does_not_confirm_order_but_adds_to_wait_list_when_seats_were_not_reserved()
+    public function it_does_not_confirm_order_but_adds_to_wait_list_when_seats_were_not_reserved(): void
     {
         $this->scenario()
             ->given(
@@ -54,7 +54,7 @@ class OrderSagaTest extends UsesScenarioTestCase
     }
 
     /** @test */
-    public function it_does_not_confirm_an_order_when_order_does_not_exist()
+    public function it_does_not_confirm_an_order_when_order_does_not_exist(): void
     {
         $this->scenario()
             ->given(
@@ -65,7 +65,7 @@ class OrderSagaTest extends UsesScenarioTestCase
     }
 
     /** @test */
-    public function it_can_handle_multiple_orders()
+    public function it_can_handle_multiple_orders(): void
     {
         $this->scenario()
             ->given(

@@ -14,7 +14,7 @@ abstract class UsesContainerTestCase extends TestCase
     /** @var Container */
     private $container;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->container = Container::build();
         $this->container
@@ -27,7 +27,7 @@ abstract class UsesContainerTestCase extends TestCase
         return $this->container;
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->container = null;
     }

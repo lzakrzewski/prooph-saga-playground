@@ -22,7 +22,7 @@ class CollectsMessagesTest extends TestCase
     private $actionEvent;
 
     /** @test */
-    public function it_collects_various_messages()
+    public function it_collects_various_messages(): void
     {
         $this->collectMessages($messages = [
             new CreateOrder($orderId = Uuid::uuid4(), 5),
@@ -33,7 +33,7 @@ class CollectsMessagesTest extends TestCase
     }
 
     /** @test */
-    public function it_does_not_record_unknown_messages()
+    public function it_does_not_record_unknown_messages(): void
     {
         $this->collectMessages([
             'unknown',
@@ -42,19 +42,19 @@ class CollectsMessagesTest extends TestCase
         $this->assertEmpty($this->collectsMessages->all());
     }
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->actionEvent = $this->prophesize(ActionEvent::class);
 
         $this->collectsMessages = new CollectsMessages();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->collectsMessages = null;
     }
 
-    private function collectMessages(array $messages)
+    private function collectMessages(array $messages): void
     {
         $collectsMessages = $this->collectsMessages;
 

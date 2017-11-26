@@ -11,7 +11,7 @@ use tests\unit\Messaging\fixtures\TestMessage;
 class MessageWithPayloadTest extends TestCase
 {
     /** @test */
-    public function message_can_have_payload()
+    public function message_can_have_payload(): void
     {
         $message = new TestMessage($messageId = Uuid::uuid4(), 954);
 

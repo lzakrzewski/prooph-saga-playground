@@ -18,7 +18,7 @@ class CreateOrderHandler
         $this->eventBus  = $eventBus;
     }
 
-    public function __invoke(CreateOrder $command)
+    public function __invoke(CreateOrder $command): void
     {
         $this->eventBus->dispatch(new OrderCreated($command->orderId, $command->numberOfSeats));
     }

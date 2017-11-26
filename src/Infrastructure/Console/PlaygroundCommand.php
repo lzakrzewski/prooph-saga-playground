@@ -48,7 +48,7 @@ class PlaygroundCommand extends Command
         $this->welcomeMessage    = $welcomeMessage;
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setDescription('Order processing with a saga and process managers.');

@@ -15,7 +15,7 @@ class CollectsMessages
     /** @var array */
     private $collectedMessages = [];
 
-    public function __invoke(ActionEvent $actionEvent)
+    public function __invoke(ActionEvent $actionEvent): void
     {
         $message = $actionEvent->getParam(MessageBus::EVENT_PARAM_MESSAGE);
 
@@ -31,7 +31,7 @@ class CollectsMessages
         return  $this->collectedMessages;
     }
 
-    private function collectMessage(Message $message)
+    private function collectMessage(Message $message): void
     {
         $collectedMessages = $this->collectedMessages;
 

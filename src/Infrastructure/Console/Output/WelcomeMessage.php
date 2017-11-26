@@ -20,7 +20,7 @@ class WelcomeMessage
         $this->pricePerSeat           = $priceForSeat;
     }
 
-    public function display(OutputInterface $output)
+    public function display(OutputInterface $output): void
     {
         $output->writeln([
             sprintf(

@@ -11,7 +11,7 @@ use Ramsey\Uuid\Uuid;
 class StateTest extends TestCase
 {
     /** @test */
-    public function it_can_be_created()
+    public function it_can_be_created(): void
     {
         $state = State::create($sagaId = Uuid::uuid4(), ['key' => 'value']);
 
@@ -21,7 +21,7 @@ class StateTest extends TestCase
     }
 
     /** @test */
-    public function it_can_apply_to_payload()
+    public function it_can_apply_to_payload(): void
     {
         $state = State::create($sagaId = Uuid::uuid4(), ['key' => 'value'])
             ->apply(['another_key' => 'another_value']);
@@ -38,7 +38,7 @@ class StateTest extends TestCase
     }
 
     /** @test */
-    public function it_overrides_payload()
+    public function it_overrides_payload(): void
     {
         $state = State::create($sagaId = Uuid::uuid4(), ['key' => 'value'])
             ->apply(['key' => 'another_value']);
@@ -49,7 +49,7 @@ class StateTest extends TestCase
     }
 
     /** @test */
-    public function it_knows_when_it_has_value_in_payload()
+    public function it_knows_when_it_has_value_in_payload(): void
     {
         $state = State::create(Uuid::uuid4(), ['key' => 'value']);
 
@@ -57,7 +57,7 @@ class StateTest extends TestCase
     }
 
     /** @test */
-    public function it_knows_when_it_does_not_have_value_in_payload()
+    public function it_knows_when_it_does_not_have_value_in_payload(): void
     {
         $state = State::create(Uuid::uuid4(), ['key' => 'value']);
 
@@ -65,7 +65,7 @@ class StateTest extends TestCase
     }
 
     /** @test */
-    public function it_knows_when_it_has_empty_value_in_payload()
+    public function it_knows_when_it_has_empty_value_in_payload(): void
     {
         $state = State::create(Uuid::uuid4(), ['key' => '']);
 
@@ -73,7 +73,7 @@ class StateTest extends TestCase
     }
 
     /** @test */
-    public function its_immutable()
+    public function its_immutable(): void
     {
         $state1 = State::create(Uuid::uuid4(), ['key' => 'value']);
         $state2 = $state1->apply(['key' => 'value']);

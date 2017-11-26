@@ -18,7 +18,7 @@ class AddSeatsToWaitListHandler
         $this->eventBus  = $eventBus;
     }
 
-    public function __invoke(AddSeatsToWaitList $command)
+    public function __invoke(AddSeatsToWaitList $command): void
     {
         $this->eventBus->dispatch(new SeatsAddedToWaitList($command->waitListId, $command->numberOfSeats));
     }

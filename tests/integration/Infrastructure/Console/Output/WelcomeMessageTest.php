@@ -14,7 +14,7 @@ class WelcomeMessageTest extends UsesContainerTestCase
     private $welcomeMessage;
 
     /** @test */
-    public function it_can_display_welcome_message()
+    public function it_can_display_welcome_message(): void
     {
         $output = $this->display();
 
@@ -22,14 +22,14 @@ class WelcomeMessageTest extends UsesContainerTestCase
         $this->assertContains((string) $this->container()->get(\Config::AVAILABLE_SEATS), $output);
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
         $this->welcomeMessage = $this->container()->get(WelcomeMessage::class);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
 

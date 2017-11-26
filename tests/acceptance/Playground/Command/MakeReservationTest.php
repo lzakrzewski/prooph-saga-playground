@@ -13,7 +13,7 @@ use tests\UsesScenarioTestCase;
 class MakeReservationTest extends UsesScenarioTestCase
 {
     /** @test */
-    public function it_notifies_that_seats_have_been_reserved()
+    public function it_notifies_that_seats_have_been_reserved(): void
     {
         $this
             ->scenario()
@@ -22,7 +22,7 @@ class MakeReservationTest extends UsesScenarioTestCase
     }
 
     /** @test */
-    public function it_notifies_that_seats_have_not_been_reserved()
+    public function it_notifies_that_seats_have_not_been_reserved(): void
     {
         $tooManySeats = $this->container()->get(\Config::AVAILABLE_SEATS) + 2;
 

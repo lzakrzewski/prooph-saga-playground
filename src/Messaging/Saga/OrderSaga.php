@@ -35,7 +35,7 @@ class OrderSaga extends Saga
         $this->stateRepository = $stateRepository;
     }
 
-    public function handleThatOrderCreated(OrderCreated $orderCreated)
+    public function handleThatOrderCreated(OrderCreated $orderCreated): void
     {
         $orderId = $orderCreated->aggregateId();
 
@@ -48,7 +48,7 @@ class OrderSaga extends Saga
         );
     }
 
-    public function handleThatSeatsReserved(SeatsReserved $seatsReserved)
+    public function handleThatSeatsReserved(SeatsReserved $seatsReserved): void
     {
         $orderId = Uuid::fromString($seatsReserved->payload()['orderId']);
         $state   = $this->stateRepository->find($orderId);
@@ -66,7 +66,7 @@ class OrderSaga extends Saga
         );
     }
 
-    public function handleThatPaymentAccepted(PaymentAccepted $paymentAccepted)
+    public function handleThatPaymentAccepted(PaymentAccepted $paymentAccepted): void
     {
         $orderId = Uuid::fromString($paymentAccepted->payload()['orderId']);
         $state   = $this->stateRepository->find($orderId);
@@ -84,7 +84,7 @@ class OrderSaga extends Saga
         );
     }
 
-    public function handleThatSeatsNotReserved(SeatsNotReserved $seatsNotReserved)
+    public function handleThatSeatsNotReserved(SeatsNotReserved $seatsNotReserved): void
     {
         $orderId = Uuid::fromString($seatsNotReserved->payload()['orderId']);
         $state   = $this->stateRepository->find($orderId);

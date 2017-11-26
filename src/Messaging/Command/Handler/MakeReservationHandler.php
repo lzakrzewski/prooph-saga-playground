@@ -27,7 +27,7 @@ class MakeReservationHandler
         $this->pricePerSeat   = $pricePerSeat;
     }
 
-    public function __invoke(MakeReservation $command)
+    public function __invoke(MakeReservation $command): void
     {
         if ($command->numberOfSeats > $this->availableSeats) {
             $this->eventBus->dispatch(new SeatsNotReserved($command->reservationId, $command->orderId, $command->numberOfSeats));

@@ -8,7 +8,7 @@ use Messaging\DomainEvent;
 
 abstract class Saga
 {
-    public function __invoke(DomainEvent $event)
+    public function __invoke(DomainEvent $event): void
     {
         $method = sprintf('handleThat%s', (new \ReflectionClass($event))->getShortName());
 

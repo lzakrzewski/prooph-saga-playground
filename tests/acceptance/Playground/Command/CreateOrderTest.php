@@ -12,7 +12,7 @@ use tests\UsesScenarioTestCase;
 class CreateOrderTest extends UsesScenarioTestCase
 {
     /** @test */
-    public function it_notifies_that_order_has_been_created()
+    public function it_notifies_that_order_has_been_created(): void
     {
         $this
             ->scenario()

@@ -23,7 +23,7 @@ class TableWithMessagesTest extends UsesContainerTestCase
     private $tableWithMessages;
 
     /** @test */
-    public function it_can_display_table_with_command_message()
+    public function it_can_display_table_with_command_message(): void
     {
         $this->collectMessages(new CreateOrder(Uuid::uuid4(), 5));
 
@@ -34,7 +34,7 @@ class TableWithMessagesTest extends UsesContainerTestCase
     }
 
     /** @test */
-    public function it_can_display_table_with_domain_event_message()
+    public function it_can_display_table_with_domain_event_message(): void
     {
         $this->collectMessages(new OrderCreated(Uuid::uuid4(), 5));
 
@@ -45,7 +45,7 @@ class TableWithMessagesTest extends UsesContainerTestCase
     }
 
     /** @test */
-    public function it_can_display_payload_of_message()
+    public function it_can_display_payload_of_message(): void
     {
         $this->collectMessages($message = new OrderCreated(Uuid::uuid4(), 5));
 
@@ -55,7 +55,7 @@ class TableWithMessagesTest extends UsesContainerTestCase
     }
 
     /** @test */
-    public function it_can_display_table_with_multiple_messages()
+    public function it_can_display_table_with_multiple_messages(): void
     {
         $this->collectMessages(
             new CreateOrder(Uuid::uuid4(), 5),
@@ -68,7 +68,7 @@ class TableWithMessagesTest extends UsesContainerTestCase
         $this->assertContains('DomainEvent', $output);
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -76,7 +76,7 @@ class TableWithMessagesTest extends UsesContainerTestCase
         $this->tableWithMessages = $this->container()->get(TableWithMessages::class);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
 
@@ -84,7 +84,7 @@ class TableWithMessagesTest extends UsesContainerTestCase
         $this->tableWithMessages = null;
     }
 
-    private function collectMessages(...$messages)
+    private function collectMessages(...$messages): void
     {
         foreach ($messages as $message) {
             $actionEvent = $this->prophesize(ActionEvent::class);

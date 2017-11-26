@@ -22,12 +22,12 @@ class InMemoryStateRepository implements StateRepository
         return self::$states[$sagaId->toString()];
     }
 
-    public function save(State $state)
+    public function save(State $state): void
     {
         self::$states[$state->sagaId()->toString()] = $state;
     }
 
-    public function reset()
+    public function reset(): void
     {
         self::$states = [];
     }

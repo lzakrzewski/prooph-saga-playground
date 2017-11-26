@@ -12,7 +12,7 @@ use tests\UsesScenarioTestCase;
 class AddSeatsToWaitListTest extends UsesScenarioTestCase
 {
     /** @test */
-    public function it_notifies_that_seats_have_been_added_to_wait_list()
+    public function it_notifies_that_seats_have_been_added_to_wait_list(): void
     {
         $this
             ->scenario()

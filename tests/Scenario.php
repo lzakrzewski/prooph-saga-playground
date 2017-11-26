@@ -96,7 +96,7 @@ class Scenario
         return call_user_func_array([$this, 'then'], $expectedMessages);
     }
 
-    private function assertThatMessageWasCollected(Message $expectedMessage, array $collectedMessages)
+    private function assertThatMessageWasCollected(Message $expectedMessage, array $collectedMessages): void
     {
         $collectedMessage = $this->findMessage($expectedMessage, $collectedMessages);
 
@@ -125,7 +125,7 @@ class Scenario
         $this->testCase->assertEquals($expectedMessage->payload(), $collectedMessage->payload());
     }
 
-    private function assertThatMessageWasNotCollected(Message $notExpectedMessage, array $collectedMessages)
+    private function assertThatMessageWasNotCollected(Message $notExpectedMessage, array $collectedMessages): void
     {
         $this->testCase->assertNull(
             $this->findMessage($notExpectedMessage, $collectedMessages),
@@ -137,7 +137,7 @@ class Scenario
         );
     }
 
-    private function dispatch(Message $message)
+    private function dispatch(Message $message): void
     {
         if ($message instanceof Command) {
             $this->commandBus->dispatch($message);

@@ -15,7 +15,7 @@ class PlaygroundCommandTest extends UsesContainerTestCase
     private $tester;
 
     /** @test */
-    public function it_returns_0_exit_code_after_success()
+    public function it_returns_0_exit_code_after_success(): void
     {
         $command = $this->container()->get(PlaygroundCommand::class);
 
@@ -24,14 +24,14 @@ class PlaygroundCommandTest extends UsesContainerTestCase
         $this->assertExitCode(0);
     }
 
-    private function executeConsoleCommand(Command $cli, array $inputs = [])
+    private function executeConsoleCommand(Command $cli, array $inputs = []): void
     {
         $this->tester = new CommandTester($cli);
         $this->tester->setInputs($inputs);
         $this->tester->execute([]);
     }
 
-    private function assertExitCode(int $expectedStatus)
+    private function assertExitCode(int $expectedStatus): void
     {
         $this->assertEquals($expectedStatus, $this->tester->getStatusCode());
     }

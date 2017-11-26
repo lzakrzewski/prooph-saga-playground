@@ -20,7 +20,7 @@ class TableWithMessages
         $this->collectedMessages = $collectedMessages;
     }
 
-    public function display(OutputInterface $output)
+    public function display(OutputInterface $output): void
     {
         $table = new Table($output);
         $table->setHeaders(['Name of message', 'type', 'payload']);
