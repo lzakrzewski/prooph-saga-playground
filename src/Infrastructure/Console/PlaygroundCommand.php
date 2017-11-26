@@ -37,7 +37,7 @@ class PlaygroundCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setDescription('Order processing with a saga and process managers.');
+            ->setDescription('Order processing with saga pattern.');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
