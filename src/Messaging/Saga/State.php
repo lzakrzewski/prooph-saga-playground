@@ -30,6 +30,11 @@ class State
         return new self($this->sagaId, array_merge($this->payload, $payload));
     }
 
+    public function has(string $key): bool
+    {
+        return isset($this->payload[$key]) && false === empty($this->payload[$key]);
+    }
+
     public function sagaId(): UuidInterface
     {
         return $this->sagaId;

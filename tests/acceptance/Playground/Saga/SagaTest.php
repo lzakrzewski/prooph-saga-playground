@@ -56,6 +56,7 @@ class SagaTest extends UsesScenarioTestCase
 
     //todo : when order was not created
     //Todo: when no reservation
+    //todo: duplicate events
 
     /** @test */
     public function it_does_not_confirm_order_when_seats_has_not_been_reserved()
