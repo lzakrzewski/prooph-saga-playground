@@ -8,6 +8,7 @@ use Messaging\DomainEvent;
 use Messaging\MessageWithPayload;
 use Ramsey\Uuid\UuidInterface;
 
+//Todo: remove?
 class SeatsAddedToWaitList implements DomainEvent
 {
     use MessageWithPayload;

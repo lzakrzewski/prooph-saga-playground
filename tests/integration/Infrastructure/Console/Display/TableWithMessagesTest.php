@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace tests\integration\Infrastructure\Console\Output;
+namespace tests\integration\Infrastructure\Console\Display;
 
-use Infrastructure\Console\Output\TableWithMessages;
+use Infrastructure\Console\Display\TableWithMessages;
 use Infrastructure\Listener\CollectsMessages;
 use Messaging\Command\CreateOrder;
 use Messaging\Event\OrderCreated;
@@ -25,7 +25,7 @@ class TableWithMessagesTest extends UsesContainerTestCase
     /** @test */
     public function it_can_display_table_with_command_message(): void
     {
-        $this->collectMessages(new CreateOrder(Uuid::uuid4(), 5));
+        $this->givenMessagesWereCollected(new CreateOrder(Uuid::uuid4(), 5));
 
         $output = $this->display();
 
@@ -36,7 +36,7 @@ class TableWithMessagesTest extends UsesContainerTestCase
     /** @test */
     public function it_can_display_table_with_domain_event_message(): void
     {
-        $this->collectMessages(new OrderCreated(Uuid::uuid4(), 5));
+        $this->givenMessagesWereCollected(new OrderCreated(Uuid::uuid4(), 5));
 
         $output = $this->display();
 
@@ -47,7 +47,7 @@ class TableWithMessagesTest extends UsesContainerTestCase
     /** @test */
     public function it_can_display_payload_of_message(): void
     {
-        $this->collectMessages($message = new OrderCreated(Uuid::uuid4(), 5));
+        $this->givenMessagesWereCollected($message = new OrderCreated(Uuid::uuid4(), 5));
 
         $output = $this->display();
 
@@ -57,7 +57,7 @@ class TableWithMessagesTest extends UsesContainerTestCase
     /** @test */
     public function it_can_display_table_with_multiple_messages(): void
     {
-        $this->collectMessages(
+        $this->givenMessagesWereCollected(
             new CreateOrder(Uuid::uuid4(), 5),
             new OrderCreated(Uuid::uuid4(), 5)
         );
@@ -84,7 +84,7 @@ class TableWithMessagesTest extends UsesContainerTestCase
         $this->tableWithMessages = null;
     }
 
-    private function collectMessages(...$messages): void
+    private function givenMessagesWereCollected(...$messages): void
     {
         foreach ($messages as $message) {
             $actionEvent = $this->prophesize(ActionEvent::class);

@@ -16,7 +16,6 @@ use Prooph\ServiceBus\CommandBus;
 use Prooph\ServiceBus\EventBus;
 use Ramsey\Uuid\Uuid;
 
-//Todo: Exceptions ?
 class OrderSaga extends Saga
 {
     /** @var CommandBus */

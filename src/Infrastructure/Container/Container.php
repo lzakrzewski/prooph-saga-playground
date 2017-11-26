@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Infrastructure\Container;
 
-use Infrastructure\Console\Output\TableWithMessages;
-use Infrastructure\Console\Output\WelcomeMessage;
+use Infrastructure\Console\Display\Questions;
+use Infrastructure\Console\Display\TableWithMessages;
+use Infrastructure\Console\Display\WelcomeMessage;
 use Infrastructure\Console\PlaygroundCommand;
 use Infrastructure\Listener\CollectsMessages;
 use Infrastructure\Persistence\InMemoryStateRepository;
@@ -30,6 +31,7 @@ use Prooph\ServiceBus\Plugin\Router\CommandRouter;
 use Prooph\ServiceBus\Plugin\Router\EventRouter;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Helper\QuestionHelper;
 
 final class Container implements ContainerInterface
 {
@@ -83,9 +85,9 @@ final class Container implements ContainerInterface
         $saga             = new OrderSaga($commandBus, $eventBus, $stateRepository);
 
         $eventBus
-            ->attach(MessageBus::EVENT_DISPATCH, $listener);
+            ->attach(MessageBus::EVENT_DISPATCH, $listener, 1);
         $commandBus
-            ->attach(MessageBus::EVENT_DISPATCH, $listener);
+            ->attach(MessageBus::EVENT_DISPATCH, $listener, 1);
 
         $commandRouter
             ->route(CreateOrder::class)
@@ -129,15 +131,17 @@ final class Container implements ContainerInterface
     {
         $application       = new Application();
         $welcomeMessage    = new WelcomeMessage($contents[\Config::AVAILABLE_SEATS], $contents[\Config::PRICE_PER_SEAT]);
+        $questionHelper    = new QuestionHelper();
+        $questions         = new Questions($contents[CommandBus::class], $questionHelper);
         $tableWithMessages = new TableWithMessages($contents[CollectsMessages::class]);
-        $consoleCommand    = new PlaygroundCommand($contents[CommandBus::class], $tableWithMessages, $welcomeMessage);
-
-        $application->add($consoleCommand);
+        $consoleCommand    = $application
+            ->add(new PlaygroundCommand($welcomeMessage, $questions, $tableWithMessages));
 
         return array_merge(
             $contents,
             [
                 WelcomeMessage::class    => $welcomeMessage,
+                Questions::class         => $questions,
                 TableWithMessages::class => $tableWithMessages,
                 PlaygroundCommand::class => $consoleCommand,
                 Application::class       => $application,

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Infrastructure\Listener;
 
-use Messaging\Command;
-use Messaging\DomainEvent;
 use Messaging\Message;
 use Prooph\Common\Event\ActionEvent;
 use Prooph\ServiceBus\MessageBus;
@@ -23,33 +21,11 @@ class CollectsMessages
             return;
         }
 
-        $this->collectMessage($actionEvent->getParam(MessageBus::EVENT_PARAM_MESSAGE));
+        $this->collectedMessages[] = $message;
     }
 
     public function all(): array
     {
         return  $this->collectedMessages;
-    }
-
-    private function collectMessage(Message $message): void
-    {
-        $collectedMessages = $this->collectedMessages;
-
-        if (
-            false === empty($collectedMessages)
-            && end($collectedMessages) instanceof DomainEvent
-            && $message instanceof Command
-        ) {
-            $event = array_pop($this->collectedMessages);
-
-            $this->collectedMessages = array_merge(
-                $this->collectedMessages,
-                [$message, $event]
-            );
-
-            return;
-        }
-
-        $this->collectedMessages[] = $message;
     }
 }

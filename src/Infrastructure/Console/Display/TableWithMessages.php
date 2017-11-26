@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Infrastructure\Console\Output;
+namespace Infrastructure\Console\Display;
 
 use Infrastructure\Listener\CollectsMessages;
 use Messaging\Command;

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace tests\integration\Infrastructure\Console\Output;
+namespace tests\integration\Infrastructure\Console\Display;
 
-use Infrastructure\Console\Output\WelcomeMessage;
+use Infrastructure\Console\Display\WelcomeMessage;
 use Symfony\Component\Console\Output\BufferedOutput;
 use tests\UsesContainerTestCase;
 
