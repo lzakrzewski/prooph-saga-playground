@@ -7,6 +7,7 @@ namespace Infrastructure\Console\Display;
 use Infrastructure\Listener\CollectsMessages;
 use Messaging\Command;
 use Messaging\DomainEvent;
+use Messaging\Event\OrderConfirmed;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -24,6 +25,7 @@ class TableWithMessages
     {
         $table = new Table($output);
         $table->setHeaders(['Name of message', 'type', 'payload']);
+        $message = null;
 
         foreach ($this->collectedMessages->all() as $message) {
             if (false === $message instanceof DomainEvent && false === $message instanceof Command) {
@@ -51,6 +53,18 @@ class TableWithMessages
         }
 
         $table->render();
+
+        if ($message instanceof OrderConfirmed) {
+            $output->writeln(
+                [
+                    '',
+                    sprintf(
+                        'Congratulations!! Your order for "%s" seats has been confirmed!',
+                        $this->info($message->payload()['numberOfSeats'])
+                    ),
+                ]
+            );
+        }
     }
 
     private function comment(string $value): string

@@ -24,7 +24,7 @@ class WelcomeMessage
     {
         $output->writeln([
             sprintf(
-                'There is "<info>%d</info>" seats available, price per seat is "<info>%d</info>".',
+                'There are "<info>%d</info>" seats available, price per a seat is "<info>%d</info>".',
                 $this->numberOfSeatsAvailable,
                 $this->pricePerSeat
             ),

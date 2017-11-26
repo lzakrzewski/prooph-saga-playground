@@ -7,6 +7,7 @@ namespace tests\integration\Infrastructure\Console\Display;
 use Infrastructure\Console\Display\TableWithMessages;
 use Infrastructure\Listener\CollectsMessages;
 use Messaging\Command\PlaceOrder;
+use Messaging\Event\OrderConfirmed;
 use Messaging\Event\OrderPlaced;
 use Prooph\Common\Event\ActionEvent;
 use Prophecy\Argument;
@@ -42,6 +43,16 @@ class TableWithMessagesTest extends UsesContainerTestCase
 
         $this->assertContains('DomainEvent', $output);
         $this->assertContains('OrderPlaced', $output);
+    }
+
+    /** @test */
+    public function it_can_display_congratulations_message(): void
+    {
+        $this->givenMessagesWereCollected(new OrderConfirmed(Uuid::uuid4(), 5));
+
+        $output = $this->display();
+
+        $this->assertContains('Congratulations!', $output);
     }
 
     /** @test */
