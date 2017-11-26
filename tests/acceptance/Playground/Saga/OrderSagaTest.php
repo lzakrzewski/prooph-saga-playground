@@ -15,17 +15,16 @@ use Messaging\Event\SeatsReserved;
 use Ramsey\Uuid\Uuid;
 use tests\UsesScenarioTestCase;
 
-//Todo: better values
 class OrderSagaTest extends UsesScenarioTestCase
 {
     /** @test */
-    public function it_makes_a_seat_reservation_and_makes_a_payment_when_order_has_been_created(): void
+    public function it_makes_a_seat_reservation_and_makes_a_payment_when_order_has_been_placed(): void
     {
         $this->scenario()
             ->when(new OrderPlaced($orderId = Uuid::uuid4(), 5))
             ->then(
-                new MakeReservation($this->aggregateIds()[1], $orderId, 5),
-                new MakePayment($this->aggregateIds()[2], $orderId, 500)
+                new MakeReservation($this->generatedIds()[1], $orderId, 5),
+                new MakePayment($this->generatedIds()[2], $orderId, 500)
             );
     }
 
@@ -35,7 +34,7 @@ class OrderSagaTest extends UsesScenarioTestCase
         $this->scenario()
             ->given(
                 new OrderPlaced($orderId = Uuid::uuid4(), 5),
-                new SeatsReserved(Uuid::uuid4(), $orderId, 5, 500)
+                new SeatsReserved(Uuid::uuid4(), $orderId, 5, 5 * 100)
             )
             ->when(new MakePayment(Uuid::uuid4(), $orderId, 500))
             ->then(new OrderConfirmed($orderId, 5));
@@ -46,11 +45,11 @@ class OrderSagaTest extends UsesScenarioTestCase
     {
         $this->scenario()
             ->given(
-                new OrderPlaced($orderId = Uuid::uuid4(), 5)
+                new OrderPlaced($orderId = Uuid::uuid4(), 11)
             )
-            ->when(new SeatsNotReserved(Uuid::uuid4(), $orderId, 5, 500))
-            ->thenNot(new OrderConfirmed($orderId, 5))
-            ->but(new AddSeatsToWaitList($this->aggregateIds()[3], 5));
+            ->when(new SeatsNotReserved(Uuid::uuid4(), $orderId, 11, 500))
+            ->thenNot(new OrderConfirmed($orderId, 11))
+            ->but(new AddSeatsToWaitList($this->generatedIds()[3], 11));
     }
 
     /** @test */

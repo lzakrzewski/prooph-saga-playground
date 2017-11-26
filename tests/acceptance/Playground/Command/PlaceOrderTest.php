@@ -9,10 +9,10 @@ use Messaging\Event\OrderPlaced;
 use Ramsey\Uuid\Uuid;
 use tests\UsesScenarioTestCase;
 
-class CreateOrderTest extends UsesScenarioTestCase
+class PlaceOrderTest extends UsesScenarioTestCase
 {
     /** @test */
-    public function it_notifies_that_order_has_been_created(): void
+    public function it_notifies_that_order_has_been_placed(): void
     {
         $this
             ->scenario()

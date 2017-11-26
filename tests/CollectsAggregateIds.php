@@ -7,8 +7,9 @@ namespace tests;
 use Ramsey\Uuid\UuidFactory;
 use Ramsey\Uuid\UuidInterface;
 
-class TestAggregateIdFactory extends UuidFactory
+class CollectsAggregateIds extends UuidFactory
 {
+    /** @var array */
     private $generatedIds = [];
 
     public function uuid(array $fields): UuidInterface

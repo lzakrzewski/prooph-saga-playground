@@ -16,8 +16,8 @@ abstract class UsesScenarioTestCase extends UsesContainerTestCase
     /** @var Scenario */
     private $scenario;
 
-    /** @var TestAggregateIdFactory */
-    private $aggregateIdFactory;
+    /** @var CollectsAggregateIds */
+    private $collectsAggregateIds;
 
     protected function setUp(): void
     {
@@ -31,8 +31,8 @@ abstract class UsesScenarioTestCase extends UsesContainerTestCase
             $this
         );
 
-        $this->aggregateIdFactory = new TestAggregateIdFactory();
-        Uuid::setFactory($this->aggregateIdFactory);
+        $this->collectsAggregateIds = new CollectsAggregateIds();
+        Uuid::setFactory($this->collectsAggregateIds);
     }
 
     protected function scenario(): Scenario
@@ -44,15 +44,15 @@ abstract class UsesScenarioTestCase extends UsesContainerTestCase
     {
         Uuid::setFactory(new UuidFactory());
 
-        $this->scenario           = null;
-        $this->aggregateIdFactory = null;
+        $this->scenario             = null;
+        $this->collectsAggregateIds = null;
 
         parent::tearDown();
     }
 
-    protected function aggregateIds(): array
+    protected function generatedIds(): array
     {
-        $allIds = $this->aggregateIdFactory->all();
+        $allIds = $this->collectsAggregateIds->all();
 
         if (empty($allIds)) {
             $this->fail('No aggregateIds generated.');
