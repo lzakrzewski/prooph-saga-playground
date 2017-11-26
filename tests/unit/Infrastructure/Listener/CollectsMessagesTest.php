@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace tests\unit\Infrastructure\Listener;
 
 use Infrastructure\Listener\CollectsMessages;
-use Messaging\Command\CreateOrder;
-use Messaging\Event\OrderCreated;
+use Messaging\Command\PlaceOrder;
+use Messaging\Event\OrderPlaced;
 use PHPUnit\Framework\TestCase;
 use Prooph\Common\Event\ActionEvent;
 use Prophecy\Argument;
@@ -25,8 +25,8 @@ class CollectsMessagesTest extends TestCase
     public function it_collects_various_messages(): void
     {
         $this->collectMessages($messages = [
-            new CreateOrder($orderId = Uuid::uuid4(), 5),
-            new OrderCreated($orderId, 5),
+            new PlaceOrder($orderId = Uuid::uuid4(), 5),
+            new OrderPlaced($orderId, 5),
         ]);
 
         $this->assertEquals($messages, $this->collectsMessages->all());

@@ -6,9 +6,9 @@ namespace Infrastructure\Console\Display;
 
 use Messaging\Command;
 use Messaging\Command\AddSeatsToWaitList;
-use Messaging\Command\CreateOrder;
 use Messaging\Command\MakePayment;
 use Messaging\Command\MakeReservation;
+use Messaging\Command\PlaceOrder;
 use Prooph\ServiceBus\CommandBus;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Console\Helper\QuestionHelper;
@@ -20,7 +20,7 @@ use Symfony\Component\Console\Question\Question;
 class Questions
 {
     const CHOICES = [
-        1 => 'Create Order',
+        1 => 'Place Order',
         2 => 'Make Reservation',
         3 => 'Make Payment',
         4 => 'Add seats to WaitList',
@@ -50,7 +50,7 @@ class Questions
 
         if (self::CHOICES[1] === $answer) {
             $this->dispatch(
-                new CreateOrder(Uuid::uuid4(), $this->askForNumberOfSeats($input, $output))
+                new PlaceOrder(Uuid::uuid4(), $this->askForNumberOfSeats($input, $output))
             );
         }
 

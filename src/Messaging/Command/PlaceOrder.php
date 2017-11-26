@@ -9,7 +9,7 @@ use Messaging\MessageWithPayload;
 use Ramsey\Uuid\UuidInterface;
 
 //Todo: Place order?
-class CreateOrder implements Command
+class PlaceOrder implements Command
 {
     use MessageWithPayload;
 

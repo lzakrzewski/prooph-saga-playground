@@ -8,7 +8,7 @@ use Messaging\DomainEvent;
 use Messaging\MessageWithPayload;
 use Ramsey\Uuid\UuidInterface;
 
-class OrderCreated implements DomainEvent
+class OrderPlaced implements DomainEvent
 {
     use MessageWithPayload;
 

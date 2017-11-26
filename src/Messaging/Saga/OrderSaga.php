@@ -8,7 +8,7 @@ use Messaging\Command\AddSeatsToWaitList;
 use Messaging\Command\MakePayment;
 use Messaging\Command\MakeReservation;
 use Messaging\Event\OrderConfirmed;
-use Messaging\Event\OrderCreated;
+use Messaging\Event\OrderPlaced;
 use Messaging\Event\PaymentAccepted;
 use Messaging\Event\SeatsNotReserved;
 use Messaging\Event\SeatsReserved;
@@ -34,7 +34,7 @@ class OrderSaga extends Saga
         $this->stateRepository = $stateRepository;
     }
 
-    public function handleThatOrderCreated(OrderCreated $orderCreated): void
+    public function handleThatOrderPlaced(OrderPlaced $orderCreated): void
     {
         $orderId = $orderCreated->aggregateId();
 

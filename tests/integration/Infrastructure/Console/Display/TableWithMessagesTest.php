@@ -6,8 +6,8 @@ namespace tests\integration\Infrastructure\Console\Display;
 
 use Infrastructure\Console\Display\TableWithMessages;
 use Infrastructure\Listener\CollectsMessages;
-use Messaging\Command\CreateOrder;
-use Messaging\Event\OrderCreated;
+use Messaging\Command\PlaceOrder;
+use Messaging\Event\OrderPlaced;
 use Prooph\Common\Event\ActionEvent;
 use Prophecy\Argument;
 use Ramsey\Uuid\Uuid;
@@ -25,29 +25,29 @@ class TableWithMessagesTest extends UsesContainerTestCase
     /** @test */
     public function it_can_display_table_with_command_message(): void
     {
-        $this->givenMessagesWereCollected(new CreateOrder(Uuid::uuid4(), 5));
+        $this->givenMessagesWereCollected(new PlaceOrder(Uuid::uuid4(), 5));
 
         $output = $this->display();
 
         $this->assertContains('Command', $output);
-        $this->assertContains('CreateOrder', $output);
+        $this->assertContains('PlaceOrder', $output);
     }
 
     /** @test */
     public function it_can_display_table_with_domain_event_message(): void
     {
-        $this->givenMessagesWereCollected(new OrderCreated(Uuid::uuid4(), 5));
+        $this->givenMessagesWereCollected(new OrderPlaced(Uuid::uuid4(), 5));
 
         $output = $this->display();
 
         $this->assertContains('DomainEvent', $output);
-        $this->assertContains('OrderCreated', $output);
+        $this->assertContains('OrderPlaced', $output);
     }
 
     /** @test */
     public function it_can_display_payload_of_message(): void
     {
-        $this->givenMessagesWereCollected($message = new OrderCreated(Uuid::uuid4(), 5));
+        $this->givenMessagesWereCollected($message = new OrderPlaced(Uuid::uuid4(), 5));
 
         $output = $this->display();
 
@@ -58,8 +58,8 @@ class TableWithMessagesTest extends UsesContainerTestCase
     public function it_can_display_table_with_multiple_messages(): void
     {
         $this->givenMessagesWereCollected(
-            new CreateOrder(Uuid::uuid4(), 5),
-            new OrderCreated(Uuid::uuid4(), 5)
+            new PlaceOrder(Uuid::uuid4(), 5),
+            new OrderPlaced(Uuid::uuid4(), 5)
         );
 
         $output = $this->display();

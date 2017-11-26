@@ -7,9 +7,9 @@ namespace tests\integration\Infrastructure\Console\Display;
 use Infrastructure\Console\Display\Questions;
 use Infrastructure\Listener\CollectsMessages;
 use Messaging\Command\AddSeatsToWaitList;
-use Messaging\Command\CreateOrder;
 use Messaging\Command\MakePayment;
 use Messaging\Command\MakeReservation;
+use Messaging\Command\PlaceOrder;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 use tests\UsesContainerTestCase;
@@ -40,7 +40,7 @@ class QuestionsTest extends UsesContainerTestCase
         return [
             [
                 ['1', '5'],
-                CreateOrder::class,
+                PlaceOrder::class,
             ],
             [
                 ['2', '5'],

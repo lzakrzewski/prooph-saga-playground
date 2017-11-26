@@ -11,14 +11,14 @@ use Infrastructure\Console\PlaygroundCommand;
 use Infrastructure\Listener\CollectsMessages;
 use Infrastructure\Persistence\InMemoryStateRepository;
 use Messaging\Command\AddSeatsToWaitList;
-use Messaging\Command\CreateOrder;
 use Messaging\Command\Handler\AddSeatsToWaitListHandler;
-use Messaging\Command\Handler\CreateOrderHandler;
 use Messaging\Command\Handler\MakePaymentHandler;
 use Messaging\Command\Handler\MakeReservationHandler;
+use Messaging\Command\Handler\PlaceOrderHandler;
 use Messaging\Command\MakePayment;
 use Messaging\Command\MakeReservation;
-use Messaging\Event\OrderCreated;
+use Messaging\Command\PlaceOrder;
+use Messaging\Event\OrderPlaced;
 use Messaging\Event\PaymentAccepted;
 use Messaging\Event\SeatsNotReserved;
 use Messaging\Event\SeatsReserved;
@@ -90,8 +90,8 @@ final class Container implements ContainerInterface
             ->attach(MessageBus::EVENT_DISPATCH, $listener, 1);
 
         $commandRouter
-            ->route(CreateOrder::class)
-            ->to(new CreateOrderHandler($eventBus))
+            ->route(PlaceOrder::class)
+            ->to(new PlaceOrderHandler($eventBus))
             ->route(MakeReservation::class)
             ->to(new MakeReservationHandler($eventBus, $contents[\Config::AVAILABLE_SEATS], $contents[\Config::PRICE_PER_SEAT]))
             ->route(MakePayment::class)
@@ -100,7 +100,7 @@ final class Container implements ContainerInterface
             ->to(new AddSeatsToWaitListHandler($eventBus));
 
         $eventRouter
-            ->route(OrderCreated::class)
+            ->route(OrderPlaced::class)
             ->to($saga)
             ->route(SeatsReserved::class)
             ->to($saga)

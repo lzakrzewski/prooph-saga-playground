@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace tests\acceptance\Messaging\Command;
 
-use Messaging\Command\CreateOrder;
-use Messaging\Event\OrderCreated;
+use Messaging\Command\PlaceOrder;
+use Messaging\Event\OrderPlaced;
 use Ramsey\Uuid\Uuid;
 use tests\UsesScenarioTestCase;
 
@@ -16,7 +16,7 @@ class CreateOrderTest extends UsesScenarioTestCase
     {
         $this
             ->scenario()
-            ->when(new CreateOrder($orderId = Uuid::uuid4(), 5))
-            ->then(new OrderCreated($orderId, 5));
+            ->when(new PlaceOrder($orderId = Uuid::uuid4(), 5))
+            ->then(new OrderPlaced($orderId, 5));
     }
 }

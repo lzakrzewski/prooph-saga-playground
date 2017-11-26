@@ -8,7 +8,7 @@ use Messaging\Command\AddSeatsToWaitList;
 use Messaging\Command\MakePayment;
 use Messaging\Command\MakeReservation;
 use Messaging\Event\OrderConfirmed;
-use Messaging\Event\OrderCreated;
+use Messaging\Event\OrderPlaced;
 use Messaging\Event\PaymentAccepted;
 use Messaging\Event\SeatsNotReserved;
 use Messaging\Event\SeatsReserved;
@@ -22,7 +22,7 @@ class OrderSagaTest extends UsesScenarioTestCase
     public function it_makes_a_seat_reservation_and_makes_a_payment_when_order_has_been_created(): void
     {
         $this->scenario()
-            ->when(new OrderCreated($orderId = Uuid::uuid4(), 5))
+            ->when(new OrderPlaced($orderId = Uuid::uuid4(), 5))
             ->then(
                 new MakeReservation($this->aggregateIds()[1], $orderId, 5),
                 new MakePayment($this->aggregateIds()[2], $orderId, 500)
@@ -34,7 +34,7 @@ class OrderSagaTest extends UsesScenarioTestCase
     {
         $this->scenario()
             ->given(
-                new OrderCreated($orderId = Uuid::uuid4(), 5),
+                new OrderPlaced($orderId = Uuid::uuid4(), 5),
                 new SeatsReserved(Uuid::uuid4(), $orderId, 5, 500)
             )
             ->when(new MakePayment(Uuid::uuid4(), $orderId, 500))
@@ -46,7 +46,7 @@ class OrderSagaTest extends UsesScenarioTestCase
     {
         $this->scenario()
             ->given(
-                new OrderCreated($orderId = Uuid::uuid4(), 5)
+                new OrderPlaced($orderId = Uuid::uuid4(), 5)
             )
             ->when(new SeatsNotReserved(Uuid::uuid4(), $orderId, 5, 500))
             ->thenNot(new OrderConfirmed($orderId, 5))
@@ -69,10 +69,10 @@ class OrderSagaTest extends UsesScenarioTestCase
     {
         $this->scenario()
             ->given(
-                new OrderCreated($orderId1 = Uuid::uuid4(), 5),
+                new OrderPlaced($orderId1 = Uuid::uuid4(), 5),
                 new SeatsReserved(Uuid::uuid4(), $orderId1, 5, 500),
                 new PaymentAccepted(Uuid::uuid4(), $orderId1, 5, 500),
-                new OrderCreated($orderId2 = Uuid::uuid4(), 5),
+                new OrderPlaced($orderId2 = Uuid::uuid4(), 5),
                 new SeatsReserved(Uuid::uuid4(), $orderId2, 5, 500)
             )
             ->when(new MakePayment(Uuid::uuid4(), $orderId2, 500))

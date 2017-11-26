@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Messaging\Command\Handler;
 
-use Messaging\Command\CreateOrder;
-use Messaging\Event\OrderCreated;
+use Messaging\Command\PlaceOrder;
+use Messaging\Event\OrderPlaced;
 use Prooph\ServiceBus\EventBus;
 
-class CreateOrderHandler
+class PlaceOrderHandler
 {
     /** @var EventBus */
     private $eventBus;
@@ -18,8 +18,8 @@ class CreateOrderHandler
         $this->eventBus  = $eventBus;
     }
 
-    public function __invoke(CreateOrder $command): void
+    public function __invoke(PlaceOrder $command): void
     {
-        $this->eventBus->dispatch(new OrderCreated($command->orderId, $command->numberOfSeats));
+        $this->eventBus->dispatch(new OrderPlaced($command->orderId, $command->numberOfSeats));
     }
 }
