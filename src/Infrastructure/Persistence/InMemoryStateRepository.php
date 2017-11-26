@@ -27,18 +27,6 @@ class InMemoryStateRepository implements StateRepository
         self::$states[$state->sagaId()->toString()] = $state;
     }
 
-    //Todo: remove this
-    public function lastState(): ?State
-    {
-        $states = self::$states;
-
-        if (empty($states)) {
-            return null;
-        }
-
-        return end($states);
-    }
-
     public function reset()
     {
         self::$states = [];

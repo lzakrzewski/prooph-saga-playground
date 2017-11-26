@@ -11,7 +11,4 @@ interface StateRepository
     public function find(UuidInterface $sagaId): ?State;
 
     public function save(State $state);
-
-    //Todo: temp hack
-    public function lastState(): ?State;
 }

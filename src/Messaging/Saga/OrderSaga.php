@@ -16,7 +16,6 @@ use Prooph\ServiceBus\CommandBus;
 use Prooph\ServiceBus\EventBus;
 use Ramsey\Uuid\Uuid;
 
-//Todo: think about abstract saga
 //Todo: Exceptions ?
 class OrderSaga extends Saga
 {
@@ -51,9 +50,8 @@ class OrderSaga extends Saga
 
     public function handleThatSeatsReserved(SeatsReserved $seatsReserved)
     {
-        $state = $this->stateRepository->find(
-            $orderId = Uuid::fromString($seatsReserved->payload()['orderId'])
-        );
+        $orderId = Uuid::fromString($seatsReserved->payload()['orderId']);
+        $state   = $this->stateRepository->find($orderId);
 
         if (null === $state) {
             return;
@@ -70,9 +68,8 @@ class OrderSaga extends Saga
 
     public function handleThatPaymentAccepted(PaymentAccepted $paymentAccepted)
     {
-        $state = $this->stateRepository->find(
-            $orderId = Uuid::fromString($paymentAccepted->payload()['orderId'])
-        );
+        $orderId = Uuid::fromString($paymentAccepted->payload()['orderId']);
+        $state   = $this->stateRepository->find($orderId);
 
         if (null === $state) {
             return;
@@ -89,7 +86,8 @@ class OrderSaga extends Saga
 
     public function handleThatSeatsNotReserved(SeatsNotReserved $seatsNotReserved)
     {
-        $state = $this->stateRepository->find($orderId = Uuid::fromString($seatsNotReserved->payload()['orderId']));
+        $orderId = Uuid::fromString($seatsNotReserved->payload()['orderId']);
+        $state   = $this->stateRepository->find($orderId);
 
         if (null === $state) {
             return;
