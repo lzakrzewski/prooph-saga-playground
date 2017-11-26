@@ -16,7 +16,7 @@ class MakePaymentTest extends UsesScenarioTestCase
     {
         $this
             ->scenario()
-            ->when(new MakePayment($paymentId = Uuid::uuid4(), 500))
-            ->then(new PaymentAccepted($paymentId, 500));
+            ->when(new MakePayment($paymentId = Uuid::uuid4(), $orderId = Uuid::uuid4(), 500))
+            ->then(new PaymentAccepted($paymentId, $orderId, 500));
     }
 }

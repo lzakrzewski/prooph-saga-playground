@@ -46,26 +46,37 @@ class Saga
         );
 
         $this->commandBus->dispatch(
-            new MakeReservation($reservationId, (int) $orderCreated->payload()['numberOfSeats'])
+            new MakeReservation($reservationId, $orderId, (int) $orderCreated->payload()['numberOfSeats'])
         );
     }
 
     public function handleThatSeatsReserved(SeatsReserved $seatsReserved)
     {
-        $state = $this->stateRepository->lastState();
+        $state = $this->stateRepository->find(
+            $orderId = Uuid::fromString($seatsReserved->payload()['orderId'])
+        );
 
         if (null === $state) {
             return;
         }
 
+        $paymentId = Uuid::uuid4();
+
+        $this->stateRepository->save(
+            State::create($orderId, $seatsReserved->payload())
+                ->apply(['paymentId' => $paymentId])
+        );
+
         $this->commandBus->dispatch(
-            new MakePayment(Uuid::uuid4(), (int) $seatsReserved->payload()['reservationAmount'])
+            new MakePayment($paymentId, $orderId, (int) $seatsReserved->payload()['reservationAmount'])
         );
     }
 
     public function handleThatSeatsNotReserved(SeatsNotReserved $seatsNotReserved)
     {
-        $state = $this->stateRepository->lastState();
+        $state = $this->stateRepository->find(
+            $orderId = Uuid::fromString($seatsNotReserved->payload()['orderId'])
+        );
 
         if (null === $state) {
             return;

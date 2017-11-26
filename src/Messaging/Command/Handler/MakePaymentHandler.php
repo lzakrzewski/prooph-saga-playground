@@ -20,6 +20,6 @@ class MakePaymentHandler
 
     public function __invoke(MakePayment $command)
     {
-        $this->eventBus->dispatch(new PaymentAccepted($command->paymentId, $command->amount));
+        $this->eventBus->dispatch(new PaymentAccepted($command->paymentId, $command->orderId, $command->amount));
     }
 }

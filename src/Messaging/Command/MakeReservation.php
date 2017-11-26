@@ -15,13 +15,17 @@ class MakeReservation implements Command
     /** @var UuidInterface */
     public $reservationId;
 
+    /** @var UuidInterface */
+    public $orderId;
+
     /** @var int */
     public $numberOfSeats;
 
-    public function __construct(UuidInterface $reservationId, int $numberOfSeats)
+    public function __construct(UuidInterface $reservationId, UuidInterface $orderId, int $numberOfSeats)
     {
-        $this->reservationId       = $reservationId;
-        $this->numberOfSeats       = $numberOfSeats;
+        $this->reservationId = $reservationId;
+        $this->orderId       = $orderId;
+        $this->numberOfSeats = $numberOfSeats;
     }
 
     public function aggregateId(): UuidInterface

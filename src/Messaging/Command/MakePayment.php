@@ -15,13 +15,17 @@ class MakePayment implements Command
     /** @var UuidInterface */
     public $paymentId;
 
+    /** @var UuidInterface */
+    public $orderId;
+
     /** @var int */
     public $amount;
 
-    public function __construct(UuidInterface $paymentId, int $amount)
+    public function __construct(UuidInterface $paymentId, UuidInterface $orderId, int $amount)
     {
-        $this->paymentId     = $paymentId;
-        $this->amount        = $amount;
+        $this->paymentId = $paymentId;
+        $this->orderId   = $orderId;
+        $this->amount    = $amount;
     }
 
     public function aggregateId(): UuidInterface

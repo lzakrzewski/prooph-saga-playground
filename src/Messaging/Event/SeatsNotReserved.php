@@ -15,13 +15,17 @@ class SeatsNotReserved implements DomainEvent
     /** @var UuidInterface */
     private $reservationId;
 
+    /** @var UuidInterface */
+    private $orderId;
+
     /** @var int */
     private $numberOfSeats;
 
-    public function __construct(UuidInterface $reservationId, int $numberOfSeats)
+    public function __construct(UuidInterface $reservationId, UuidInterface $orderId, int $numberOfSeats)
     {
-        $this->reservationId     = $reservationId;
-        $this->numberOfSeats     = $numberOfSeats;
+        $this->reservationId = $reservationId;
+        $this->orderId       = $orderId;
+        $this->numberOfSeats = $numberOfSeats;
     }
 
     public function aggregateId(): UuidInterface

@@ -15,12 +15,16 @@ class PaymentAccepted implements DomainEvent
     /** @var UuidInterface */
     private $paymentId;
 
+    /** @var UuidInterface */
+    private $orderId;
+
     /** @var int */
     private $amount;
 
-    public function __construct(UuidInterface $paymentId, int $amount)
+    public function __construct(UuidInterface $paymentId, UuidInterface $orderId, int $amount)
     {
         $this->paymentId = $paymentId;
+        $this->orderId   = $orderId;
         $this->amount    = $amount;
     }
 

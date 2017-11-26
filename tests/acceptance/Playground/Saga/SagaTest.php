@@ -21,10 +21,10 @@ class SagaTest extends UsesScenarioTestCase
     public function it_makes_a_seat_reservation_and_makes_a_payment_when_order_has_been_created()
     {
         $this->scenario()
-            ->when(new OrderCreated(Uuid::uuid4(), 5))
+            ->when(new OrderCreated($orderId = Uuid::uuid4(), 5))
             ->then(
-                new MakeReservation($this->aggregateIds()[1], 5),
-                new MakePayment($this->aggregateIds()[2], 500)
+                new MakeReservation($this->aggregateIds()[1], $orderId, 5),
+                new MakePayment($this->aggregateIds()[2], $orderId, 500)
             );
     }
 
@@ -34,9 +34,9 @@ class SagaTest extends UsesScenarioTestCase
         $this->scenario()
             ->given(
                 new OrderCreated($orderId = Uuid::uuid4(), 5),
-                new SeatsReserved(Uuid::uuid4(), 5, 500)
+                new SeatsReserved(Uuid::uuid4(), $orderId, 5, 500)
             )
-            ->when(new MakePayment(Uuid::uuid4(), 500))
+            ->when(new MakePayment(Uuid::uuid4(), $orderId, 500))
             ->then(new OrderConfirmed($orderId, 5));
     }
 
@@ -65,9 +65,9 @@ class SagaTest extends UsesScenarioTestCase
         $this->scenario()
             ->given(
                 new OrderCreated($orderId = Uuid::uuid4(), 5),
-                new SeatsNotReserved(Uuid::uuid4(), 5, 500)
+                new SeatsNotReserved(Uuid::uuid4(), $orderId, 5, 500)
             )
-            ->when(new PaymentAccepted($this->aggregateIds()[2], 5, 5 * 100))
+            ->when(new PaymentAccepted($this->aggregateIds()[2], $orderId, 5, 5 * 100))
             ->thenNot(new OrderConfirmed($orderId = Uuid::uuid4(), 5));
     }
 
