@@ -4,18 +4,23 @@ declare(strict_types=1);
 
 namespace tests;
 
-use Infrastructure\Middleware\CollectsMessages;
+use Infrastructure\Listener\CollectsMessages;
 use Messaging\Command;
 use Messaging\DomainEvent;
 use Messaging\Message;
 use PHPUnit\Framework\TestCase;
 use Prooph\ServiceBus\CommandBus;
 use Prooph\ServiceBus\EventBus;
+use Prooph\ServiceBus\Exception\MessageDispatchException;
+use Prooph\ServiceBus\Plugin\Router\CommandRouter;
 
 class Scenario
 {
     /** @var CommandBus */
     private $commandBus;
+
+    /** @var CommandRouter */
+    private $commandRouter;
 
     /** @var EventBus */
     private $eventBus;
@@ -28,11 +33,13 @@ class Scenario
 
     public function __construct(
         CommandBus $commandBus,
+        CommandRouter $commandRouter,
         EventBus $eventBus,
         CollectsMessages $messages,
         TestCase $testCase
     ) {
-        $this->commandBus        = $this->setupCommandBus($commandBus);
+        $this->commandBus        = $commandBus;
+        $this->commandRouter     = $commandRouter;
         $this->eventBus          = $eventBus;
         $this->testCase          = $testCase;
         $this->collectedMessages = $messages;
@@ -40,13 +47,17 @@ class Scenario
 
     public function given(...$events): self
     {
-        $this->commandBus->willNotDispatchCommands();
+        $this->commandRouter->detachFromMessageBus($this->commandBus);
 
         foreach ($events as $event) {
-            $this->eventBus->dispatch($event);
+            try {
+                $this->eventBus->dispatch($event);
+            } catch (MessageDispatchException $e) {
+                continue;
+            }
         }
 
-        $this->commandBus->willDispatchCommands();
+        $this->commandRouter->attachToMessageBus($this->commandBus);
 
         return $this;
     }
@@ -78,11 +89,6 @@ class Scenario
         }
 
         return $this;
-    }
-
-    public function and(...$expectedMessages): self
-    {
-        return $this->then($expectedMessages);
     }
 
     public function but(...$expectedMessages): self
@@ -168,42 +174,5 @@ class Scenario
         }
 
         return null;
-    }
-
-    private function setupCommandBus($commandBus): CommandBus
-    {
-        return new class($commandBus) extends CommandBus {
-            /** @var CommandBus */
-            private $baseCommandBus;
-
-            /** @var bool */
-            private $willDispatchCommands = true;
-
-            public function __construct(CommandBus $commandBus)
-            {
-                parent::__construct();
-
-                $this->baseCommandBus = $commandBus;
-            }
-
-            public function willNotDispatchCommands()
-            {
-                $this->willDispatchCommands = false;
-            }
-
-            public function willDispatchCommands()
-            {
-                $this->willDispatchCommands = true;
-            }
-
-            public function dispatch($command): void
-            {
-                if (false === $this->willDispatchCommands) {
-                    return;
-                }
-
-                $this->baseCommandBus->dispatch($command);
-            }
-        };
     }
 }

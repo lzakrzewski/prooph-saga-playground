@@ -6,7 +6,7 @@ namespace tests\integration\Infrastructure\Container;
 
 use Infrastructure\Container\Container;
 use Infrastructure\Container\NotFoundException;
-use Infrastructure\Middleware\CollectsMessages;
+use Infrastructure\Listener\CollectsMessages;
 use PHPUnit\Framework\TestCase;
 
 class ContainerTest extends TestCase

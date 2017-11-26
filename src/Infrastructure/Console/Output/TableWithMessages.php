@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Infrastructure\Console\Output;
 
-use Infrastructure\Middleware\CollectsMessages;
+use Infrastructure\Listener\CollectsMessages;
 use Messaging\Command;
 use Messaging\DomainEvent;
 use Symfony\Component\Console\Helper\Table;

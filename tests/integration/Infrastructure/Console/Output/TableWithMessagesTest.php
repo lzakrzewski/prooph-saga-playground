@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace tests\integration\Infrastructure\Console\Output;
 
 use Infrastructure\Console\Output\TableWithMessages;
-use Infrastructure\Middleware\CollectsMessages;
+use Infrastructure\Listener\CollectsMessages;
 use Messaging\Command\CreateOrder;
 use Messaging\Event\OrderCreated;
 use Prooph\Common\Event\ActionEvent;

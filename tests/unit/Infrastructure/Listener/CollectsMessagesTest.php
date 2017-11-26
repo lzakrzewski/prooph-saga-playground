@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace tests\unit\Infrastructure\Middleware;
+namespace tests\unit\Infrastructure\Listener;
 
-use Infrastructure\Middleware\CollectsMessages;
+use Infrastructure\Listener\CollectsMessages;
 use Messaging\Command\CreateOrder;
 use Messaging\Event\OrderCreated;
 use PHPUnit\Framework\TestCase;
@@ -38,18 +38,6 @@ class CollectsMessagesTest extends TestCase
         $this->collectMessages([
             'unknown',
         ]);
-
-        $this->assertEmpty($this->collectsMessages->all());
-    }
-
-    /** @test */
-    public function it_can_not_get_all_recorded_messages_twice()
-    {
-        $this->collectMessages([
-            new CreateOrder($orderId = Uuid::uuid4(), 5),
-        ]);
-
-        $this->collectsMessages->all();
 
         $this->assertEmpty($this->collectsMessages->all());
     }

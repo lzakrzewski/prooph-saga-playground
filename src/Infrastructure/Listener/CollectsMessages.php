@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Infrastructure\Middleware;
+namespace Infrastructure\Listener;
 
 use Messaging\Command;
 use Messaging\DomainEvent;
@@ -28,11 +28,7 @@ class CollectsMessages
 
     public function all(): array
     {
-        $messages = $this->collectedMessages;
-
-        $this->collectedMessages = [];
-
-        return $messages;
+        return  $this->collectedMessages;
     }
 
     private function collectMessage(Message $message)

@@ -43,43 +43,38 @@ class SagaTest extends UsesScenarioTestCase
     /** @test */
     public function it_does_not_confirm_order_but_adds_to_wait_list_when_seats_were_not_reserved()
     {
-        $this->markTestSkipped();
-
         $this->scenario()
             ->given(
                 new OrderCreated($orderId = Uuid::uuid4(), 5)
             )
-            ->when(new SeatsNotReserved(Uuid::uuid4(), 5, 500))
+            ->when(new SeatsNotReserved(Uuid::uuid4(), $orderId, 5, 500))
             ->thenNot(new OrderConfirmed($orderId, 5))
             ->but(new AddSeatsToWaitList($this->aggregateIds()[3], 5));
     }
 
-    //todo : when order was not created
-    //Todo: when no reservation
-    //todo: duplicate events
-
     /** @test */
-    public function it_does_not_confirm_order_when_seats_has_not_been_reserved()
+    public function it_does_not_confirm_an_order_when_order_does_not_exist()
     {
-        $this->markTestIncomplete();
-
         $this->scenario()
             ->given(
-                new OrderCreated($orderId = Uuid::uuid4(), 5),
-                new SeatsNotReserved(Uuid::uuid4(), $orderId, 5, 500)
+                new SeatsReserved(Uuid::uuid4(), $orderId = Uuid::uuid4(), 5, 500)
             )
-            ->when(new PaymentAccepted($this->aggregateIds()[2], $orderId, 5, 5 * 100))
-            ->thenNot(new OrderConfirmed($orderId = Uuid::uuid4(), 5));
-    }
-
-    public function test_test()
-    {
-        $this->markTestIncomplete('Waitlist scenario');
+            ->when(new MakePayment(Uuid::uuid4(), $orderId, 500))
+            ->thenNot(new OrderConfirmed($orderId, 5));
     }
 
     /** @test */
-    public function it_can_handle_multiple_sagas()
+    public function it_can_handle_multiple_orders()
     {
-        $this->markTestIncomplete();
+        $this->scenario()
+            ->given(
+                new OrderCreated($orderId1 = Uuid::uuid4(), 5),
+                new SeatsReserved(Uuid::uuid4(), $orderId1, 5, 500),
+                new PaymentAccepted(Uuid::uuid4(), $orderId1, 5, 500),
+                new OrderCreated($orderId2 = Uuid::uuid4(), 5),
+                new SeatsReserved(Uuid::uuid4(), $orderId2, 5, 500)
+            )
+            ->when(new MakePayment(Uuid::uuid4(), $orderId2, 500))
+            ->then(new OrderConfirmed($orderId2, 5));
     }
 }

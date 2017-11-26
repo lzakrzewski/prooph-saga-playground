@@ -7,7 +7,7 @@ namespace Infrastructure\Container;
 use Infrastructure\Console\Output\TableWithMessages;
 use Infrastructure\Console\Output\WelcomeMessage;
 use Infrastructure\Console\PlaygroundCommand;
-use Infrastructure\Middleware\CollectsMessages;
+use Infrastructure\Listener\CollectsMessages;
 use Infrastructure\Persistence\InMemoryStateRepository;
 use Messaging\Command\AddSeatsToWaitList;
 use Messaging\Command\CreateOrder;
@@ -19,6 +19,7 @@ use Messaging\Command\MakePayment;
 use Messaging\Command\MakeReservation;
 use Messaging\Event\OrderCreated;
 use Messaging\Event\PaymentAccepted;
+use Messaging\Event\SeatsNotReserved;
 use Messaging\Event\SeatsReserved;
 use Messaging\Saga\Saga;
 use Messaging\Saga\StateRepository;
@@ -73,18 +74,18 @@ final class Container implements ContainerInterface
 
     private function messaging(array $contents): array
     {
-        $commandRouter   = new CommandRouter();
-        $eventRouter     = new EventRouter();
-        $middleware      = new CollectsMessages();
-        $commandBus      = new CommandBus();
-        $eventBus        = new EventBus();
-        $stateRepository = new InMemoryStateRepository();
-        $saga            = new Saga($commandBus, $eventBus, $stateRepository);
+        $commandRouter    = new CommandRouter();
+        $eventRouter      = new EventRouter();
+        $listener         = new CollectsMessages();
+        $commandBus       = new CommandBus();
+        $eventBus         = new EventBus();
+        $stateRepository  = new InMemoryStateRepository();
+        $saga             = new Saga($commandBus, $eventBus, $stateRepository);
 
         $eventBus
-            ->attach(MessageBus::EVENT_DISPATCH, $middleware);
+            ->attach(MessageBus::EVENT_DISPATCH, $listener);
         $commandBus
-            ->attach(MessageBus::EVENT_DISPATCH, $middleware);
+            ->attach(MessageBus::EVENT_DISPATCH, $listener);
 
         $commandRouter
             ->route(CreateOrder::class)
@@ -101,6 +102,8 @@ final class Container implements ContainerInterface
             ->to([$saga, 'handleThatOrderCreated'])
             ->route(SeatsReserved::class)
             ->to([$saga, 'handleThatSeatsReserved'])
+            ->route(SeatsNotReserved::class)
+            ->to([$saga, 'handleThatSeatsNotReserved'])
             ->route(PaymentAccepted::class)
             ->to([$saga, 'handleThatPaymentAccepted']);
 
@@ -113,7 +116,8 @@ final class Container implements ContainerInterface
         return array_merge(
             $contents,
             [
-                CollectsMessages::class => $middleware,
+                CommandRouter::class    => $commandRouter,
+                CollectsMessages::class => $listener,
                 StateRepository::class  => $stateRepository,
                 EventBus::class         => $eventBus,
                 CommandBus::class       => $commandBus,

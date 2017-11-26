@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace tests;
 
-use Infrastructure\Middleware\CollectsMessages;
+use Infrastructure\Listener\CollectsMessages;
 use Prooph\ServiceBus\CommandBus;
 use Prooph\ServiceBus\EventBus;
+use Prooph\ServiceBus\Plugin\Router\CommandRouter;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidFactory;
 
@@ -24,6 +25,7 @@ abstract class UsesScenarioTestCase extends UsesContainerTestCase
 
         $this->scenario = new Scenario(
             $this->container()->get(CommandBus::class),
+            $this->container()->get(CommandRouter::class),
             $this->container()->get(EventBus::class),
             $this->container()->get(CollectsMessages::class),
             $this
