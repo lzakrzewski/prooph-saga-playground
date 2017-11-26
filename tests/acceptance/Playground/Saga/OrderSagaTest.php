@@ -15,7 +15,8 @@ use Messaging\Event\SeatsReserved;
 use Ramsey\Uuid\Uuid;
 use tests\UsesScenarioTestCase;
 
-class SagaTest extends UsesScenarioTestCase
+//Todo: better values
+class OrderSagaTest extends UsesScenarioTestCase
 {
     /** @test */
     public function it_makes_a_seat_reservation_and_makes_a_payment_when_order_has_been_created()

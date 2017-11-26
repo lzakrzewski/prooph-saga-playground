@@ -21,7 +21,7 @@ use Messaging\Event\OrderCreated;
 use Messaging\Event\PaymentAccepted;
 use Messaging\Event\SeatsNotReserved;
 use Messaging\Event\SeatsReserved;
-use Messaging\Saga\Saga;
+use Messaging\Saga\OrderSaga;
 use Messaging\Saga\StateRepository;
 use Prooph\ServiceBus\CommandBus;
 use Prooph\ServiceBus\EventBus;
@@ -80,7 +80,7 @@ final class Container implements ContainerInterface
         $commandBus       = new CommandBus();
         $eventBus         = new EventBus();
         $stateRepository  = new InMemoryStateRepository();
-        $saga             = new Saga($commandBus, $eventBus, $stateRepository);
+        $saga             = new OrderSaga($commandBus, $eventBus, $stateRepository);
 
         $eventBus
             ->attach(MessageBus::EVENT_DISPATCH, $listener);
@@ -99,13 +99,13 @@ final class Container implements ContainerInterface
 
         $eventRouter
             ->route(OrderCreated::class)
-            ->to([$saga, 'handleThatOrderCreated'])
+            ->to($saga)
             ->route(SeatsReserved::class)
-            ->to([$saga, 'handleThatSeatsReserved'])
+            ->to($saga)
             ->route(SeatsNotReserved::class)
-            ->to([$saga, 'handleThatSeatsNotReserved'])
+            ->to($saga)
             ->route(PaymentAccepted::class)
-            ->to([$saga, 'handleThatPaymentAccepted']);
+            ->to($saga);
 
         $commandRouter
             ->attachToMessageBus($commandBus);
