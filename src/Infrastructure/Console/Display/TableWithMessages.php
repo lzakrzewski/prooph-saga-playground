@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Infrastructure\Console\Display;
 
-use Infrastructure\Listener\CollectsMessages;
+use Infrastructure\Listener\MessageCollector;
 use Messaging\Command;
 use Messaging\DomainEvent;
 use Messaging\Event\OrderConfirmed;
@@ -13,10 +13,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class TableWithMessages
 {
-    /** @var CollectsMessages */
+    /** @var MessageCollector */
     private $collectedMessages;
 
-    public function __construct(CollectsMessages $collectedMessages)
+    public function __construct(MessageCollector $collectedMessages)
     {
         $this->collectedMessages = $collectedMessages;
     }

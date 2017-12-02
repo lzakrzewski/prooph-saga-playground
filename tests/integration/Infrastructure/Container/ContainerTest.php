@@ -6,7 +6,7 @@ namespace tests\integration\Infrastructure\Container;
 
 use Infrastructure\Container\Container;
 use Infrastructure\Container\NotFoundException;
-use Infrastructure\Listener\CollectsMessages;
+use Infrastructure\Listener\MessageCollector;
 use PHPUnit\Framework\TestCase;
 
 class ContainerTest extends TestCase
@@ -15,7 +15,7 @@ class ContainerTest extends TestCase
     public function it_knows_when_service_exists(): void
     {
         $this->assertTrue(
-            Container::build()->has(CollectsMessages::class)
+            Container::build()->has(MessageCollector::class)
         );
     }
 
@@ -31,8 +31,8 @@ class ContainerTest extends TestCase
     public function it_can_get_service(): void
     {
         $this->assertInstanceOf(
-            CollectsMessages::class,
-            Container::build()->get(CollectsMessages::class)
+            MessageCollector::class,
+            Container::build()->get(MessageCollector::class)
         );
     }
 
@@ -42,7 +42,7 @@ class ContainerTest extends TestCase
         $this->expectException(NotFoundException::class);
 
         $this->assertInstanceOf(
-            CollectsMessages::class,
+            MessageCollector::class,
             Container::build()->get('unknown')
         );
     }

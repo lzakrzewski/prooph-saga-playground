@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace tests\integration\Infrastructure\Console\Display;
 
 use Infrastructure\Console\Display\Questions;
-use Infrastructure\Listener\CollectsMessages;
+use Infrastructure\Listener\MessageCollector;
 use Messaging\Command\AddSeatsToWaitList;
 use Messaging\Command\MakePayment;
 use Messaging\Command\MakeReservation;
@@ -86,7 +86,7 @@ class QuestionsTest extends ContainerTestCase
     {
         $messages = $this
             ->container()
-            ->get(CollectsMessages::class)
+            ->get(MessageCollector::class)
             ->all();
 
         $this->assertNotEmpty($messages);

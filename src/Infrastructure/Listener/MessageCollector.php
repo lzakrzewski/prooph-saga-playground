@@ -8,7 +8,7 @@ use Messaging\Message;
 use Prooph\Common\Event\ActionEvent;
 use Prooph\ServiceBus\MessageBus;
 
-class CollectsMessages
+class MessageCollector
 {
     /** @var array */
     private $collectedMessages = [];

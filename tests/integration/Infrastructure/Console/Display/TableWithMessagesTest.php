@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace tests\integration\Infrastructure\Console\Display;
 
 use Infrastructure\Console\Display\TableWithMessages;
-use Infrastructure\Listener\CollectsMessages;
+use Infrastructure\Listener\MessageCollector;
 use Messaging\Command\PlaceOrder;
 use Messaging\Event\OrderConfirmed;
 use Messaging\Event\OrderPlaced;
@@ -17,7 +17,7 @@ use tests\ContainerTestCase;
 
 class TableWithMessagesTest extends ContainerTestCase
 {
-    /** @var CollectsMessages */
+    /** @var MessageCollector */
     private $collectsMessages;
 
     /** @var TableWithMessages */
@@ -83,7 +83,7 @@ class TableWithMessagesTest extends ContainerTestCase
     {
         parent::setUp();
 
-        $this->collectsMessages  = $this->container()->get(CollectsMessages::class);
+        $this->collectsMessages  = $this->container()->get(MessageCollector::class);
         $this->tableWithMessages = $this->container()->get(TableWithMessages::class);
     }
 

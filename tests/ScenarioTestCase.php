@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace tests;
 
-use Infrastructure\Listener\CollectsMessages;
+use Infrastructure\Listener\MessageCollector;
 use Prooph\ServiceBus\CommandBus;
 use Prooph\ServiceBus\EventBus;
 use Prooph\ServiceBus\Plugin\Router\CommandRouter;
@@ -16,7 +16,7 @@ abstract class ScenarioTestCase extends ContainerTestCase
     /** @var Scenario */
     private $scenario;
 
-    /** @var CollectsAggregateIds */
+    /** @var UuidCollector */
     private $collectsAggregateIds;
 
     protected function setUp(): void
@@ -27,11 +27,11 @@ abstract class ScenarioTestCase extends ContainerTestCase
             $this->container()->get(CommandBus::class),
             $this->container()->get(CommandRouter::class),
             $this->container()->get(EventBus::class),
-            $this->container()->get(CollectsMessages::class),
+            $this->container()->get(MessageCollector::class),
             $this
         );
 
-        $this->collectsAggregateIds = new CollectsAggregateIds();
+        $this->collectsAggregateIds = new UuidCollector();
         Uuid::setFactory($this->collectsAggregateIds);
     }
 
@@ -50,7 +50,7 @@ abstract class ScenarioTestCase extends ContainerTestCase
         parent::tearDown();
     }
 
-    protected function generatedIds(): array
+    protected function uuids(): array
     {
         $allIds = $this->collectsAggregateIds->all();
 

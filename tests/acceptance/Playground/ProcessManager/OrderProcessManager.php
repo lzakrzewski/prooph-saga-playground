@@ -23,8 +23,8 @@ class OrderProcessManager extends ScenarioTestCase
         $this->scenario()
             ->when(new OrderPlaced($orderId = Uuid::uuid4(), 5))
             ->then(
-                new MakeReservation($this->generatedIds()[1], $orderId, 5),
-                new MakePayment($this->generatedIds()[2], $orderId, 500)
+                new MakeReservation($this->uuids()[1], $orderId, 5),
+                new MakePayment($this->uuids()[2], $orderId, 500)
             );
     }
 
@@ -49,7 +49,7 @@ class OrderProcessManager extends ScenarioTestCase
             )
             ->when(new SeatsNotReserved(Uuid::uuid4(), $orderId, 11, 500))
             ->thenNot(new OrderConfirmed($orderId, 11))
-            ->but(new AddSeatsToWaitList($this->generatedIds()[3], 11));
+            ->but(new AddSeatsToWaitList($this->uuids()[3], 11));
     }
 
     /** @test */

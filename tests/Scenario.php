@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace tests;
 
-use Infrastructure\Listener\CollectsMessages;
+use Infrastructure\Listener\MessageCollector;
 use Messaging\Command;
 use Messaging\DomainEvent;
 use Messaging\Message;
@@ -25,7 +25,7 @@ class Scenario
     /** @var EventBus */
     private $eventBus;
 
-    /** @var CollectsMessages */
+    /** @var MessageCollector */
     private $collectedMessages;
 
     /** @var TestCase */
@@ -35,7 +35,7 @@ class Scenario
         CommandBus $commandBus,
         CommandRouter $commandRouter,
         EventBus $eventBus,
-        CollectsMessages $messages,
+        MessageCollector $messages,
         TestCase $testCase
     ) {
         $this->commandBus        = $commandBus;

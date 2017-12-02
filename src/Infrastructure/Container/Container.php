@@ -8,7 +8,7 @@ use Infrastructure\Console\Display\Questions;
 use Infrastructure\Console\Display\TableWithMessages;
 use Infrastructure\Console\Display\WelcomeMessage;
 use Infrastructure\Console\PlaygroundCommand;
-use Infrastructure\Listener\CollectsMessages;
+use Infrastructure\Listener\MessageCollector;
 use Infrastructure\Persistence\InMemoryStateRepository;
 use Messaging\Command\AddSeatsToWaitList;
 use Messaging\Command\Handler\AddSeatsToWaitListHandler;
@@ -78,7 +78,7 @@ final class Container implements ContainerInterface
     {
         $commandRouter    = new CommandRouter();
         $eventRouter      = new EventRouter();
-        $listener         = new CollectsMessages();
+        $listener         = new MessageCollector();
         $commandBus       = new CommandBus();
         $eventBus         = new EventBus();
         $stateRepository  = new InMemoryStateRepository();
@@ -119,7 +119,7 @@ final class Container implements ContainerInterface
             $contents,
             [
                 CommandRouter::class    => $commandRouter,
-                CollectsMessages::class => $listener,
+                MessageCollector::class => $listener,
                 StateRepository::class  => $stateRepository,
                 EventBus::class         => $eventBus,
                 CommandBus::class       => $commandBus,
@@ -133,7 +133,7 @@ final class Container implements ContainerInterface
         $welcomeMessage    = new WelcomeMessage($contents[\Config::AVAILABLE_SEATS], $contents[\Config::PRICE_PER_SEAT]);
         $questionHelper    = new QuestionHelper();
         $questions         = new Questions($contents[CommandBus::class], $questionHelper);
-        $tableWithMessages = new TableWithMessages($contents[CollectsMessages::class]);
+        $tableWithMessages = new TableWithMessages($contents[MessageCollector::class]);
         $consoleCommand    = $application
             ->add(new PlaygroundCommand($welcomeMessage, $questions, $tableWithMessages));
 

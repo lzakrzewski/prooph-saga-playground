@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace tests\unit\Infrastructure\Listener;
 
-use Infrastructure\Listener\CollectsMessages;
+use Infrastructure\Listener\MessageCollector;
 use Messaging\Command\PlaceOrder;
 use Messaging\Event\OrderPlaced;
 use PHPUnit\Framework\TestCase;
@@ -13,9 +13,9 @@ use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
 use Ramsey\Uuid\Uuid;
 
-class CollectsMessagesTest extends TestCase
+class MessageCollectorTest extends TestCase
 {
-    /** @var CollectsMessages */
+    /** @var MessageCollector */
     private $collectsMessages;
 
     /** @var ActionEvent|ObjectProphecy */
@@ -33,7 +33,7 @@ class CollectsMessagesTest extends TestCase
     }
 
     /** @test */
-    public function it_does_not_record_unknown_messages(): void
+    public function it_does_not_collect_unknown_messages(): void
     {
         $this->collectMessages([
             'unknown',
@@ -46,7 +46,7 @@ class CollectsMessagesTest extends TestCase
     {
         $this->actionEvent = $this->prophesize(ActionEvent::class);
 
-        $this->collectsMessages = new CollectsMessages();
+        $this->collectsMessages = new MessageCollector();
     }
 
     protected function tearDown(): void
