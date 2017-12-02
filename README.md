@@ -18,7 +18,7 @@ Inspired by:
 
 ## Installation (non-docker):
 - `git clone git@github.com:lzakrzewski/prooph-saga-playground.git`
-- `prooph-saga-playground && composer install`
+- `cd prooph-saga-playground && composer install`
 
 ## Usage:
 ##### non-docker:
@@ -28,3 +28,6 @@ Inspired by:
 
 ## Example output:
 ![example-output](resources/example.png)
+
+## ProcessManager
+Todo: Put some explanation here
