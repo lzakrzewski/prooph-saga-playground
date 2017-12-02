@@ -7,9 +7,9 @@ namespace tests\acceptance\Messaging\Command;
 use Messaging\Command\MakePayment;
 use Messaging\Event\PaymentAccepted;
 use Ramsey\Uuid\Uuid;
-use tests\UsesScenarioTestCase;
+use tests\ScenarioTestCase;
 
-class MakePaymentTest extends UsesScenarioTestCase
+class MakePaymentTest extends ScenarioTestCase
 {
     /** @test */
     public function it_notifies_that_payment_has_been_accepted(): void

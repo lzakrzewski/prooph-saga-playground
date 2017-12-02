@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Messaging\Saga;
+namespace Messaging\ProcessManager;
 
 use Messaging\Command\AddSeatsToWaitList;
 use Messaging\Command\MakePayment;
@@ -16,7 +16,7 @@ use Prooph\ServiceBus\CommandBus;
 use Prooph\ServiceBus\EventBus;
 use Ramsey\Uuid\Uuid;
 
-class OrderSaga extends Saga
+class OrderProcessManager extends Saga
 {
     /** @var CommandBus */
     private $commandBus;

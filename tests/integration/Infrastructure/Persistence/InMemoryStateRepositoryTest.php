@@ -5,43 +5,43 @@ declare(strict_types=1);
 namespace tests\integration\Infrastructure\Persistence;
 
 use Infrastructure\Persistence\InMemoryStateRepository;
-use Messaging\Saga\State;
-use Messaging\Saga\StateRepository;
+use Messaging\ProcessManager\State;
+use Messaging\ProcessManager\StateRepository;
 use Ramsey\Uuid\Uuid;
-use tests\UsesContainerTestCase;
+use tests\ContainerTestCase;
 
-class InMemoryStateRepositoryTest extends UsesContainerTestCase
+class InMemoryStateRepositoryTest extends ContainerTestCase
 {
     /** @var InMemoryStateRepository */
     private $stateRepository;
 
     /** @test */
-    public function it_can_find_state_by_saga_id(): void
+    public function it_can_find_state_by_process_id(): void
     {
         $this->stateRepository->save(
-            State::create($sagaId = Uuid::uuid4(), $payload = ['someId' => Uuid::uuid4()])
+            State::create($processId = Uuid::uuid4(), $payload = ['someId' => Uuid::uuid4()])
         );
 
-        $state = $this->stateRepository->find($sagaId);
+        $state = $this->stateRepository->find($processId);
 
         $this->assertInstanceOf(State::class, $state);
-        $this->assertTrue($sagaId->equals($state->sagaId()));
+        $this->assertTrue($processId->equals($state->processId()));
         $this->assertEquals($payload, $state->payload());
     }
 
     /** @test */
     public function it_can_update_state(): void
     {
-        $this->given(State::create($sagaId = Uuid::uuid4(), ['someId' => Uuid::uuid4()]));
+        $this->given(State::create($processId = Uuid::uuid4(), ['someId' => Uuid::uuid4()]));
 
         $this->stateRepository->save(
-            State::create($sagaId, $payload = ['someId' => Uuid::uuid4(), 'a' => 'b'])
+            State::create($processId, $payload = ['someId' => Uuid::uuid4(), 'a' => 'b'])
         );
 
-        $state = $this->stateRepository->find($sagaId);
+        $state = $this->stateRepository->find($processId);
 
         $this->assertInstanceOf(State::class, $state);
-        $this->assertTrue($sagaId->equals($state->sagaId()));
+        $this->assertTrue($processId->equals($state->processId()));
         $this->assertEquals($payload, $state->payload());
     }
 

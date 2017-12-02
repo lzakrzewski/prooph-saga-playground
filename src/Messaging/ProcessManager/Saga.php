@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Messaging\Saga;
+namespace Messaging\ProcessManager;
 
 use Messaging\DomainEvent;
 

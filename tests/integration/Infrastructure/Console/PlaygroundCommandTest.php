@@ -7,9 +7,9 @@ namespace tests\integration\Infrastructure\Console;
 use Infrastructure\Console\PlaygroundCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
-use tests\UsesContainerTestCase;
+use tests\ContainerTestCase;
 
-class PlaygroundCommandTest extends UsesContainerTestCase
+class PlaygroundCommandTest extends ContainerTestCase
 {
     /** @var CommandTester */
     private $tester;

@@ -12,9 +12,9 @@ use Messaging\Command\MakeReservation;
 use Messaging\Command\PlaceOrder;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
-use tests\UsesContainerTestCase;
+use tests\ContainerTestCase;
 
-class QuestionsTest extends UsesContainerTestCase
+class QuestionsTest extends ContainerTestCase
 {
     /** @var Questions */
     private $questions;

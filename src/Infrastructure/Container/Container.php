@@ -22,8 +22,8 @@ use Messaging\Event\OrderPlaced;
 use Messaging\Event\PaymentAccepted;
 use Messaging\Event\SeatsNotReserved;
 use Messaging\Event\SeatsReserved;
-use Messaging\Saga\OrderSaga;
-use Messaging\Saga\StateRepository;
+use Messaging\ProcessManager\OrderProcessManager;
+use Messaging\ProcessManager\StateRepository;
 use Prooph\ServiceBus\CommandBus;
 use Prooph\ServiceBus\EventBus;
 use Prooph\ServiceBus\MessageBus;
@@ -82,7 +82,7 @@ final class Container implements ContainerInterface
         $commandBus       = new CommandBus();
         $eventBus         = new EventBus();
         $stateRepository  = new InMemoryStateRepository();
-        $saga             = new OrderSaga($commandBus, $eventBus, $stateRepository);
+        $saga             = new OrderProcessManager($commandBus, $eventBus, $stateRepository);
 
         $eventBus
             ->attach(MessageBus::EVENT_DISPATCH, $listener, 1);

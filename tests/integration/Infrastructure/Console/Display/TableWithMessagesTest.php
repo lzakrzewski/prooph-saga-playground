@@ -13,9 +13,9 @@ use Prooph\Common\Event\ActionEvent;
 use Prophecy\Argument;
 use Ramsey\Uuid\Uuid;
 use Symfony\Component\Console\Output\BufferedOutput;
-use tests\UsesContainerTestCase;
+use tests\ContainerTestCase;
 
-class TableWithMessagesTest extends UsesContainerTestCase
+class TableWithMessagesTest extends ContainerTestCase
 {
     /** @var CollectsMessages */
     private $collectsMessages;

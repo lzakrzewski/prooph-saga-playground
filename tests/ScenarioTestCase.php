@@ -11,7 +11,7 @@ use Prooph\ServiceBus\Plugin\Router\CommandRouter;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidFactory;
 
-abstract class UsesScenarioTestCase extends UsesContainerTestCase
+abstract class ScenarioTestCase extends ContainerTestCase
 {
     /** @var Scenario */
     private $scenario;

@@ -8,9 +8,9 @@ use Messaging\Command\MakeReservation;
 use Messaging\Event\SeatsNotReserved;
 use Messaging\Event\SeatsReserved;
 use Ramsey\Uuid\Uuid;
-use tests\UsesScenarioTestCase;
+use tests\ScenarioTestCase;
 
-class MakeReservationTest extends UsesScenarioTestCase
+class MakeReservationTest extends ScenarioTestCase
 {
     /** @test */
     public function it_notifies_that_seats_have_been_reserved(): void

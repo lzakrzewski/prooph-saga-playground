@@ -7,9 +7,9 @@ namespace tests\acceptance\Messaging\Command;
 use Messaging\Command\PlaceOrder;
 use Messaging\Event\OrderPlaced;
 use Ramsey\Uuid\Uuid;
-use tests\UsesScenarioTestCase;
+use tests\ScenarioTestCase;
 
-class PlaceOrderTest extends UsesScenarioTestCase
+class PlaceOrderTest extends ScenarioTestCase
 {
     /** @test */
     public function it_notifies_that_order_has_been_placed(): void

@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace tests;
 
 use Infrastructure\Container\Container;
-use Messaging\Saga\StateRepository;
+use Messaging\ProcessManager\StateRepository;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 
-abstract class UsesContainerTestCase extends TestCase
+abstract class ContainerTestCase extends TestCase
 {
     /** @var Container */
     private $container;

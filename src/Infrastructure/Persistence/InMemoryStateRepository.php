@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Infrastructure\Persistence;
 
-use Messaging\Saga\State;
-use Messaging\Saga\StateRepository;
+use Messaging\ProcessManager\State;
+use Messaging\ProcessManager\StateRepository;
 use Ramsey\Uuid\UuidInterface;
 
 class InMemoryStateRepository implements StateRepository
@@ -13,18 +13,18 @@ class InMemoryStateRepository implements StateRepository
     /** @var State[] */
     private static $states = [];
 
-    public function find(UuidInterface $sagaId): ?State
+    public function find(UuidInterface $processId): ?State
     {
-        if (false === $this->hasState($sagaId)) {
+        if (false === $this->hasState($processId)) {
             return null;
         }
 
-        return self::$states[$sagaId->toString()];
+        return self::$states[$processId->toString()];
     }
 
     public function save(State $state): void
     {
-        self::$states[$state->sagaId()->toString()] = $state;
+        self::$states[$state->processId()->toString()] = $state;
     }
 
     public function reset(): void
@@ -32,8 +32,8 @@ class InMemoryStateRepository implements StateRepository
         self::$states = [];
     }
 
-    private function hasState(UuidInterface $sagaId): bool
+    private function hasState(UuidInterface $processId): bool
     {
-        return isset(self::$states[$sagaId->toString()]);
+        return isset(self::$states[$processId->toString()]);
     }
 }

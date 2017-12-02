@@ -6,9 +6,9 @@ namespace tests\integration\Infrastructure\Console\Display;
 
 use Infrastructure\Console\Display\WelcomeMessage;
 use Symfony\Component\Console\Output\BufferedOutput;
-use tests\UsesContainerTestCase;
+use tests\ContainerTestCase;
 
-class WelcomeMessageTest extends UsesContainerTestCase
+class WelcomeMessageTest extends ContainerTestCase
 {
     /** @var WelcomeMessage */
     private $welcomeMessage;
