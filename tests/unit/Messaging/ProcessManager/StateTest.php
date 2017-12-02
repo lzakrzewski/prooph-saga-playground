@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace tests\unit\Messaging\State;
+namespace tests\unit\Messaging\ProcessManager;
 
 use Messaging\ProcessManager\State;
 use PHPUnit\Framework\TestCase;

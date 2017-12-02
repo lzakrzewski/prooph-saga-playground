@@ -16,8 +16,10 @@ use Prooph\ServiceBus\CommandBus;
 use Prooph\ServiceBus\EventBus;
 use Ramsey\Uuid\Uuid;
 
-class OrderProcessManager extends Saga
+class OrderProcessManager implements ProcessManager
 {
+    use HandlesDomainEvents;
+
     /** @var CommandBus */
     private $commandBus;
 
