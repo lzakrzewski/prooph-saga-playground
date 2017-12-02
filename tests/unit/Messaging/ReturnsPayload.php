@@ -8,10 +8,10 @@ use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 use tests\unit\Messaging\fixtures\TestMessage;
 
-class MessageWithPayloadTest extends TestCase
+class ReturnsPayload extends TestCase
 {
     /** @test */
-    public function message_can_have_payload(): void
+    public function it_can_return_payload(): void
     {
         $message = new TestMessage($messageId = Uuid::uuid4(), 954);
 

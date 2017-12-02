@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Messaging;
 
-trait MessageWithPayload
+trait ReturnsPayload
 {
     public function payload(): array
     {
@@ -15,16 +15,10 @@ trait MessageWithPayload
                     $property->setAccessible(true);
                 }
 
-                $value = (string) $property->getValue($message);
-
-                if (true === $property->isPrivate()) {
-                    $property->setAccessible(false);
-                }
-
                 return array_merge(
                     $payload,
                     [
-                        $property->getName() => $value,
+                        $property->getName() => (string) $property->getValue($message),
                     ]
                 );
             },

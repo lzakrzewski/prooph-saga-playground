@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Messaging\Event;
 
 use Messaging\DomainEvent;
-use Messaging\MessageWithPayload;
+use Messaging\ReturnsPayload;
 use Ramsey\Uuid\UuidInterface;
 
 class PaymentAccepted implements DomainEvent
 {
-    use MessageWithPayload;
+    use ReturnsPayload;
 
     /** @var UuidInterface */
     private $paymentId;

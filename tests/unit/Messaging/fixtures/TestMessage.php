@@ -6,12 +6,12 @@ namespace tests\unit\Messaging\fixtures;
 
 use Messaging\Command;
 use Messaging\DomainEvent;
-use Messaging\MessageWithPayload;
+use Messaging\ReturnsPayload;
 use Ramsey\Uuid\UuidInterface;
 
 class TestMessage implements DomainEvent, Command
 {
-    use MessageWithPayload;
+    use ReturnsPayload;
 
     /** @var UuidInterface */
     public $messageId;

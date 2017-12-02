@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Messaging\Command;
 
 use Messaging\Command;
-use Messaging\MessageWithPayload;
+use Messaging\ReturnsPayload;
 use Ramsey\Uuid\UuidInterface;
 
 class MakePayment implements Command
 {
-    use MessageWithPayload;
+    use ReturnsPayload;
 
     /** @var UuidInterface */
     public $paymentId;
