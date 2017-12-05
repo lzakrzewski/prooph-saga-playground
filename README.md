@@ -2,8 +2,8 @@
 [![Build Status](https://travis-ci.org/lzakrzewski/prooph-saga-playground.svg?branch=master)](https://travis-ci.org/lzakrzewski/prooph-saga-playground)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/lzakrzewski/prooph-saga-playground/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/lzakrzewski/prooph-saga-playground/?branch=master)       
 
-Small CLI application to introduce Saga pattern.  
-[Prooph/service-bus](https://github.com/prooph/service-bus) was used for handling messages (commands, domain events) purpose.    
+Small CLI application to introduce Saga pattern. It reflects the business process of making a reservation. It uses message driven approach (see [ProcessManager](https://github.com/lzakrzewski/prooph-saga-playground#processmanager) section).
+[Prooph/service-bus](https://github.com/prooph/service-bus) was used for handling messages (commands, domain events).    
  
 Inspired by:
 - **Modeling complex processes and time with Saga pattern** talk by [Mariusz Gil](https://twitter.com/mariuszgil) performed on [2017.phpce](https://2017.phpce.eu) conference
@@ -20,14 +20,21 @@ Inspired by:
 - `git clone git@github.com:lzakrzewski/prooph-saga-playground.git`
 - `cd prooph-saga-playground && composer install`
 
-## Usage:
+## Usage
 ##### non-docker:
 - `bin/console prooph:saga:playground`      
 ##### docker:
 - `make playground` (with docker installation step might be skipped)
 
-## Example output:
-![example-output](resources/example.png)
+## Example output
+![example-output](resources/example-output.gif)
 
 ## ProcessManager
-Todo: Put some explanation here
+It can handle two scenarios. When everything is fine then `OrderProcessManager` dispatches `OrderConfirmed` event and process ends. If there is not enough seats available then `OrderProcessManager` dispatches `AddSeatsToWaitList` command.    
+
+##### happy-path:
+![happy-path](resources/happy-path.png)
+
+##### unhappy-path:
+![unhappy-path](resources/unhappy-path.png)
+
