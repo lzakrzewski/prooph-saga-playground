@@ -19,7 +19,7 @@ class InMemoryStateRepositoryTest extends ContainerTestCase
     public function it_can_find_state_by_process_id(): void
     {
         $this->stateRepository->save(
-            State::create($processId = Uuid::uuid4(), $payload = ['someId' => Uuid::uuid4()])
+            State::start($processId = Uuid::uuid4(), $payload = ['someId' => Uuid::uuid4()])
         );
 
         $state = $this->stateRepository->find($processId);
@@ -32,10 +32,10 @@ class InMemoryStateRepositoryTest extends ContainerTestCase
     /** @test */
     public function it_can_update_state(): void
     {
-        $this->given(State::create($processId = Uuid::uuid4(), ['someId' => Uuid::uuid4()]));
+        $this->given(State::start($processId = Uuid::uuid4(), ['someId' => Uuid::uuid4()]));
 
         $this->stateRepository->save(
-            State::create($processId, $payload = ['someId' => Uuid::uuid4(), 'a' => 'b'])
+            State::start($processId, $payload = ['someId' => Uuid::uuid4(), 'a' => 'b'])
         );
 
         $state = $this->stateRepository->find($processId);
@@ -48,7 +48,7 @@ class InMemoryStateRepositoryTest extends ContainerTestCase
     /** @test */
     public function it_returns_null_when_state_for_given_criteria_does_not_exist(): void
     {
-        $this->given(State::create(Uuid::uuid4(), ['someId' => Uuid::uuid4()]));
+        $this->given(State::start(Uuid::uuid4(), ['someId' => Uuid::uuid4()]));
 
         $this->assertNull($this->stateRepository->find(Uuid::uuid4()));
     }

@@ -14,20 +14,33 @@ class State
     /** @var array */
     private $payload = [];
 
-    private function __construct(UuidInterface $processId, array $payload)
+    /** @var \DateTime */
+    private $markedAsDoneAt;
+
+    private function __construct(UuidInterface $processId, array $payload, ?\DateTime $markedAsDoneAt)
     {
-        $this->payload    = $payload;
-        $this->processId  = $processId;
+        $this->payload        = $payload;
+        $this->processId      = $processId;
+        $this->markedAsDoneAt = $markedAsDoneAt;
     }
 
-    public static function create(UuidInterface $processId, array $payload): self
+    public static function start(UuidInterface $processId, array $payload): self
     {
-        return new self($processId, $payload);
+        return new self($processId, $payload, null);
     }
 
     public function apply(array $payload): self
     {
-        return new self($this->processId, array_merge($this->payload, $payload));
+        if ($this->markedAsDoneAt instanceof \DateTime) {
+            throw new \DomainException('Can not modify state when its done');
+        }
+
+        return new self($this->processId, array_merge($this->payload, $payload), $this->markedAsDoneAt);
+    }
+
+    public function done(): self
+    {
+        return new self($this->processId, $this->payload, new \DateTime());
     }
 
     public function has(string $key): bool

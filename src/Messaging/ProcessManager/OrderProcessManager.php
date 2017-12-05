@@ -40,9 +40,7 @@ class OrderProcessManager implements ProcessManager
     {
         $orderId = $orderCreated->aggregateId();
 
-        $this->stateRepository->save(
-            State::create($orderId, $orderCreated->payload())
-        );
+        $this->stateRepository->save(State::start($orderId, $orderCreated->payload()));
 
         $this->commandBus->dispatch(
             new MakeReservation(Uuid::uuid4(), $orderId, (int) $orderCreated->payload()['numberOfSeats'])
@@ -58,9 +56,7 @@ class OrderProcessManager implements ProcessManager
             return;
         }
 
-        $this->stateRepository->save(
-            $state->apply($seatsReserved->payload())
-        );
+        $this->stateRepository->save($state->apply($seatsReserved->payload()));
 
         $this->commandBus->dispatch(
             new MakePayment(Uuid::uuid4(), $orderId, (int) $seatsReserved->payload()['reservationAmount'])
@@ -79,6 +75,8 @@ class OrderProcessManager implements ProcessManager
         if (false === $state->has('reservationId')) {
             return;
         }
+
+        $this->stateRepository->save($state->done());
 
         $this->eventBus->dispatch(
             new OrderConfirmed(Uuid::fromString($state->payload()['orderId']), (int) $state->payload()['numberOfSeats'])
